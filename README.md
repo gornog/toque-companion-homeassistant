@@ -124,6 +124,14 @@ Each button's availability tracks the robot's `state.can.<action>.allowed`. Refu
 
 ---
 
+## Dashboard example (Lovelace)
+
+A ready-to-use interactive dashboard tile is in [`examples/lovelace-dashboard-tile`](examples/lovelace-dashboard-tile): a vector Monsieur Cuisine Connect frame with a faithful Toque screen driven live by this integration's entities, plus tappable **Pause / Stop / Tare** buttons (English and French YAML, entity-prefix generator, offline validator).
+
+![Toque Companion dashboard tile](examples/lovelace-dashboard-tile/preview/live-preview.png)
+
+---
+
 ## Security Disclosure
 
 - **Plain HTTP on LAN**: Per Toque's upstream Companion v1 design, traffic on port `8088` is plain HTTP without TLS. The HMAC-SHA256 proof exchange (`POST /api/prove`) prevents Home Assistant from sending its bearer token to an imposter or reassigned IP, **but does not encrypt traffic against a passive LAN eavesdropper**. Keep the robot and Home Assistant on a trusted private LAN and never expose port `8088` to the internet.

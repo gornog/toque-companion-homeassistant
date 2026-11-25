@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="920" viewBox="0 0 1200 920">
+  <defs>
+    <!-- Sleek pearl-white sculpted body lighting -->
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#D7DEE6"/>
+      <stop offset="4.5%" stop-color="#F0F3F7"/>
+      <stop offset="11%" stop-color="#FAFBFD"/>
+      <stop offset="50%" stop-color="#FFFFFF"/>
+      <stop offset="89%" stop-color="#FAFBFD"/>
+      <stop offset="95.5%" stop-color="#ECEFF4"/>
+      <stop offset="100%" stop-color="#D4DCE5"/>
+    </linearGradient>
+    <linearGradient id="bodyVert" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.45"/>
+      <stop offset="14%" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="86%" stop-color="#DCE3EC" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#C8D1DC" stop-opacity="0.45"/>
+    </linearGradient>
+
+    <!-- Top collar depression & ambient shadow -->
+    <linearGradient id="collarWell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D9E0E8"/>
+      <stop offset="55%" stop-color="#EDF1F5"/>
+      <stop offset="100%" stop-color="#FAFBFD"/>
+    </linearGradient>
+    <linearGradient id="bowlAO" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E252D" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#1E252D" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#10151B" stop-opacity="0.42"/>
+    </linearGradient>
+
+    <!-- Brushed stainless steel 4.5 L bowl -->
+    <linearGradient id="steelBowl" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5B636D"/>
+      <stop offset="7%" stop-color="#87909B"/>
+      <stop offset="18%" stop-color="#C4CCD4"/>
+      <stop offset="29%" stop-color="#E7ECF1"/>
+      <stop offset="36%" stop-color="#F6F8FA"/>
+      <stop offset="48%" stop-color="#B9C2CB"/>
+      <stop offset="61%" stop-color="#8A939E"/>
+      <stop offset="73%" stop-color="#C9D0D8"/>
+      <stop offset="83%" stop-color="#EDF1F5"/>
+      <stop offset="92%" stop-color="#96A0AB"/>
+      <stop offset="100%" stop-color="#555C66"/>
+    </linearGradient>
+    <linearGradient id="ribGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4A525C" stop-opacity="0.48"/>
+      <stop offset="38%" stop-color="#FFFFFF" stop-opacity="0.62"/>
+      <stop offset="68%" stop-color="#B8C0C8" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#424A54" stop-opacity="0.42"/>
+    </linearGradient>
+    <linearGradient id="handleDark" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#181C21"/>
+      <stop offset="32%" stop-color="#353B43"/>
+      <stop offset="78%" stop-color="#22262C"/>
+      <stop offset="100%" stop-color="#14181D"/>
+    </linearGradient>
+
+    <!-- Recessed light fascia -->
+    <linearGradient id="fasciaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F7F9FB"/>
+      <stop offset="50%" stop-color="#F2F5F8"/>
+      <stop offset="100%" stop-color="#EAEFF4"/>
+    </linearGradient>
+
+    <!-- Dial metallic radial/specular shading -->
+    <radialGradient id="ledHalo" cx="50%" cy="50%" r="50%">
+      <stop offset="68%" stop-color="#C8F7F7" stop-opacity="0.92"/>
+      <stop offset="84%" stop-color="#DDFBFB" stop-opacity="0.88"/>
+      <stop offset="100%" stop-color="#B5EAEB" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="knobWell" cx="50%" cy="50%" r="50%">
+      <stop offset="72%" stop-color="#B7C0CB" stop-opacity="0.55"/>
+      <stop offset="92%" stop-color="#DCE2E9" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="knobRim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="45%" stop-color="#CBD3DC"/>
+      <stop offset="100%" stop-color="#8A939E"/>
+    </linearGradient>
+    <linearGradient id="knobFace" x1="0.15" y1="0.1" x2="0.85" y2="0.9">
+      <stop offset="0%" stop-color="#DFE5EC"/>
+      <stop offset="30%" stop-color="#F8FAFC"/>
+      <stop offset="52%" stop-color="#BFC8D2"/>
+      <stop offset="76%" stop-color="#EEF2F6"/>
+      <stop offset="100%" stop-color="#AEB7C2"/>
+    </linearGradient>
+
+    <clipPath id="bodyClip">
+      <path d="M 38 0 L 1162 0 C 1178 90 1188 260 1188 520 C 1188 735 1178 855 1152 920 L 48 920 C 22 855 12 735 12 520 C 12 260 22 90 38 0 Z"/>
+    </clipPath>
+    <clipPath id="bowlClip">
+      <path d="M 192 0 L 1008 0 C 986 84 892 162 600 162 C 308 162 214 84 192 0 Z"/>
+    </clipPath>
+    <clipPath id="knobClip">
+      <circle cx="600" cy="890" r="67"/>
+    </clipPath>
+    <clipPath id="bottomClip">
+      <rect x="0" y="0" width="1200" height="920"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#bottomClip)">
+    <!-- Main sleek pearl-white body -->
+    <g clip-path="url(#bodyClip)">
+      <rect x="0" y="0" width="1200" height="920" fill="url(#bodyGrad)"/>
+      <rect x="0" y="0" width="1200" height="920" fill="url(#bodyVert)"/>
+
+      <!-- Subtle outer shoulder edge highlights -->
+      <path d="M 54 0 C 38 140 30 340 30 560 C 30 740 38 850 58 920" fill="none" stroke="#FFFFFF" stroke-width="3" opacity="0.72"/>
+      <path d="M 1146 0 C 1162 140 1170 340 1170 560 C 1170 740 1162 850 1142 920" fill="none" stroke="#FFFFFF" stroke-width="3" opacity="0.65"/>
+
+      <!-- Recessed bowl well lip -->
+      <path d="M 164 0 C 186 98 294 176 600 176 C 906 176 1014 98 1036 0 Z" fill="url(#collarWell)"/>
+      <path d="M 164 0 C 186 98 294 176 600 176 C 906 176 1014 98 1036 0" fill="none" stroke="#C7D0DA" stroke-width="2"/>
+      <path d="M 164 2 C 186 100 294 178 600 178 C 906 178 1014 100 1036 2" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.85"/>
+
+      <!-- Dark handle bases emerging cleanly on left/right sides of bowl collar -->
+      <path d="M 136 0 L 218 0 L 210 66 C 180 56 154 32 136 0 Z" fill="url(#handleDark)"/>
+      <path d="M 1064 0 L 982 0 L 990 66 C 1020 56 1046 32 1064 0 Z" fill="url(#handleDark)"/>
+
+      <!-- Wide 4.5 L brushed stainless-steel bowl lower section (no front Smart handle!) -->
+      <g clip-path="url(#bowlClip)">
+        <rect x="190" y="0" width="820" height="166" fill="url(#steelBowl)"/>
+        <!-- Subtle vertical stamped ribs -->
+        <rect x="334" y="0" width="16" height="145" rx="8" fill="url(#ribGrad)"/>
+        <rect x="850" y="0" width="16" height="145" rx="8" fill="url(#ribGrad)"/>
+        <!-- Soft horizontal collar shadow -->
+        <rect x="190" y="60" width="820" height="106" fill="url(#bowlAO)"/>
+      </g>
+      <!-- Crisp bowl rim contact line -->
+      <path d="M 192 0 C 214 84 308 162 600 162 C 892 162 986 84 1008 0" fill="none" stroke="#2B323A" stroke-width="2.2" opacity="0.45"/>
+
+      <!-- Subtle bowl-alignment emblem on collar -->
+      <g fill="none" stroke="#9AA4AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+        <path d="M 588 184 h 24 l -12 12 z"/>
+        <path d="M 594 188 h 12"/>
+      </g>
+
+      <!-- Sleek recessed pearl-white front fascia -->
+      <rect x="82" y="206" width="1036" height="670" rx="32" fill="url(#fasciaGrad)" stroke="#D4DCE5" stroke-width="2"/>
+      <rect x="84" y="208" width="1032" height="666" rx="30" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.9"/>
+
+      <!-- Recessed glossy dark bezel & screen cutout -->
+      <rect x="142" y="232" width="916" height="542" rx="12" fill="#C4CDD7"/>
+      <rect x="144" y="234" width="912" height="538" rx="10" fill="#181E26"/>
+      <rect x="148" y="238" width="904" height="530" rx="6" fill="#070E1B"/>
+
+      <!-- Refined Connect mark at bottom-left of fascia -->
+      <circle cx="176" cy="828" r="13" fill="#B61C3B"/>
+      <path d="M 169 833 L 172 823 L 176 829 L 180 823 L 183 833" fill="none" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="198" y="825" fill="#7D8793" font-size="14.5" font-weight="600" font-family="sans-serif">monsieur</text>
+      <text x="198" y="841" fill="#929CA8" font-size="13.5" font-weight="500" font-family="sans-serif">cuisine connect</text>
+
+      <!-- Centered brushed silver rotary selector dial with glowing halo (cropped cleanly at bottom edge) -->
+      <circle cx="600" cy="890" r="90" fill="url(#knobWell)"/>
+      <circle cx="600" cy="890" r="81" fill="url(#ledHalo)"/>
+      <circle cx="600" cy="890" r="71" fill="url(#knobRim)" stroke="#9DA7B3" stroke-width="1.5"/>
+      <g clip-path="url(#knobClip)">
+        <circle cx="600" cy="890" r="67" fill="url(#knobFace)"/>
+        <!-- Conic brushed aluminum sheen wedges -->
+        <polygon points="600,890 520,822 570,810" fill="#FFFFFF" opacity="0.48"/>
+        <polygon points="600,890 642,812 686,834" fill="#FFFFFF" opacity="0.34"/>
+        <polygon points="600,890 518,864 522,905" fill="#6F7883" opacity="0.18"/>
+        <polygon points="600,890 680,860 680,910" fill="#6F7883" opacity="0.22"/>
+      </g>
+      <circle cx="600" cy="890" r="66" fill="none" stroke="#FFFFFF" stroke-width="1.4" opacity="0.72"/>
+    </g>
+  </g>
+</svg>

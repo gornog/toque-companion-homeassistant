@@ -1,0 +1,99 @@
+<svg viewBox="0 0 1024 600" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Toque interface En cours">
+<defs>
+  <linearGradient id="tqBg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#16294A"/>
+    <stop offset="52%" stop-color="#0D1A31"/>
+    <stop offset="100%" stop-color="#070E1B"/>
+  </linearGradient>
+</defs>
+<rect width="1024" height="600" fill="url(#tqBg)"/>
+
+<!-- TopBar -->
+<circle cx="38" cy="36" r="7" fill="#FF8A3D"/>
+<text x="54" y="43" fill="#F3F5F9" font-size="24" font-weight="600" font-family="sans-serif">Toque</text>
+<rect x="132" y="19" width="136" height="34" rx="17" fill="#1A2639" stroke="#2A3A55" stroke-width="1.5"/>
+<text x="200" y="41" text-anchor="middle" fill="#FF8A3D" font-size="15" font-weight="600" font-family="sans-serif">En cours</text>
+
+<rect x="434" y="18" width="140" height="36" rx="18" fill="#3D151B" stroke="#FF5A5F" stroke-width="1.5"/>
+<text x="504" y="41" text-anchor="middle" fill="#FF8084" font-size="15" font-weight="600" font-family="sans-serif">CHAUD ≥60°</text>
+
+<rect x="584" y="18" width="172" height="36" rx="18" fill="#1A2639" stroke="#2A3A55" stroke-width="1.5"/>
+<text x="670" y="41" text-anchor="middle" fill="#9CA8BC" font-size="15" font-weight="600" font-family="sans-serif">Couvercle fermé</text>
+
+<rect x="766" y="18" width="234" height="36" rx="18" fill="#1A2639" stroke="#2A3A55" stroke-width="1.5"/>
+<circle cx="786" cy="36" r="5.5" fill="#3DDC97"/>
+<text x="800" y="41" fill="#F3F5F9" font-size="15" font-weight="600" font-family="sans-serif">Base prête</text>
+
+
+
+<!-- Card 1: DURÉE -->
+<rect x="24" y="78" width="210" height="332" rx="20" fill="#131D2E" stroke="#FF8A3D" stroke-width="2.5"/>
+<circle cx="48" cy="111" r="8.5" fill="none" stroke="#FF8A3D" stroke-width="2"/>
+<path d="M48 106 v5 l3.5 2" fill="none" stroke="#FF8A3D" stroke-width="2" stroke-linecap="round"/>
+<text x="66" y="117" fill="#9CA8BC" font-size="16" font-weight="700" letter-spacing="0.8" font-family="sans-serif">DURÉE</text>
+<text x="42" y="206" fill="#F3F5F9" font-size="56" font-weight="300" font-family="sans-serif">12:00</text>
+<text x="42" y="246" fill="#9CA8BC" font-size="18" font-family="sans-serif">Fin 15:47</text>
+<rect x="42" y="272" width="132" height="30" rx="15" fill="#1A2639" stroke="#2A3A55"/><text x="108" y="292" text-anchor="middle" fill="#5CC8FF" font-size="14" font-weight="600" font-family="sans-serif">Phase 1/2</text>
+
+<!-- Card 2: TEMPÉRATURE -->
+<rect x="248" y="78" width="210" height="332" rx="20" fill="#131D2E" stroke="#FF8A3D" stroke-width="2.5"/>
+<text x="270" y="117" fill="#9CA8BC" font-size="16" font-weight="700" letter-spacing="0.6" font-family="sans-serif">TEMPÉRATURE</text>
+<text x="266" y="206" fill="#F3F5F9" font-size="58" font-weight="300" font-family="sans-serif">100°</text>
+<text x="266" y="246" fill="#FF8A3D" font-size="18" font-weight="600" font-family="sans-serif">Chauffe active</text>
+<rect x="266" y="330" width="174" height="38" rx="14" fill="rgba(255,138,61,0.18)" stroke="#FF8A3D"/>
+<text x="353" y="355" text-anchor="middle" fill="#FF8A3D" font-size="16" font-weight="600" font-family="sans-serif">Chauffe ON</text>
+
+<!-- Card 3: VITESSE -->
+<rect x="472" y="78" width="210" height="332" rx="20" fill="#131D2E" stroke="#5CC8FF" stroke-width="2.5"/>
+<text x="494" y="117" fill="#9CA8BC" font-size="16" font-weight="700" letter-spacing="0.8" font-family="sans-serif">VITESSE</text>
+<text x="490" y="206" fill="#F3F5F9" font-size="58" font-weight="300" font-family="sans-serif">4</text>
+<text x="490" y="246" fill="#5CC8FF" font-size="18" font-weight="600" font-family="sans-serif">Moteur · Hacher</text>
+
+<rect x="490" y="284" width="174" height="36" rx="18" fill="#FF8A3D" stroke="#FF8A3D"/>
+<text x="577" y="308" text-anchor="middle" fill="#070E1B" font-size="15.5" font-weight="600" font-family="sans-serif">↺ Sens inverse</text>
+
+<rect x="490" y="330" width="174" height="36" rx="18" fill="#1A2639" stroke="#2A3A55"/>
+<text x="577" y="354" text-anchor="middle" fill="#9CA8BC" font-size="15.5" font-weight="600" font-family="sans-serif">Fouet</text>
+
+<!-- Right Panel: TempRing + RPM bars + Balance + Dock -->
+<rect x="700" y="78" width="300" height="498" rx="22" fill="#131D2E" stroke="#2A3A55" stroke-width="1.5"/>
+<path d="M 776.46 297.54 A 104 104 0 1 1 923.54 297.54" fill="none" stroke="#223048" stroke-width="14" stroke-linecap="round"/>
+<path d="M 776.46 297.54 A 104 104 0 1 1 923.54 297.54" fill="none" stroke="#FF8A3D" stroke-width="14" stroke-linecap="round" stroke-dasharray="490.088 653.451" stroke-dashoffset="131.947"/>
+<line x1="938.8" y1="196.3" x2="959.8" y2="189.8" stroke="#F3F5F9" stroke-width="3.5" stroke-linecap="round"/>
+<text x="850" y="226" text-anchor="middle" fill="#F3F5F9" font-size="56" font-weight="300" font-family="sans-serif">95°</text>
+<text x="850" y="258" text-anchor="middle" fill="#FF5A5F" font-size="17" font-weight="700" font-family="sans-serif">CHAUD ≥60°</text>
+<rect x="774.0" y="330.2" width="11" height="11.8" rx="3" fill="#FF8A3D"/><rect x="789.5" y="328.4" width="11" height="13.6" rx="3" fill="#FF8A3D"/><rect x="805.0" y="326.6" width="11" height="15.4" rx="3" fill="#FF8A3D"/><rect x="820.5" y="324.8" width="11" height="17.2" rx="3" fill="#FF8A3D"/><rect x="836.0" y="323.0" width="11" height="19.0" rx="3" fill="#223048"/><rect x="851.5" y="321.2" width="11" height="20.8" rx="3" fill="#223048"/><rect x="867.0" y="319.4" width="11" height="22.6" rx="3" fill="#223048"/><rect x="882.5" y="317.6" width="11" height="24.4" rx="3" fill="#223048"/><rect x="898.0" y="315.8" width="11" height="26.2" rx="3" fill="#223048"/><rect x="913.5" y="314.0" width="11" height="28.0" rx="3" fill="#223048"/>
+
+<line x1="726" y1="382" x2="974" y2="382" stroke="#223048" stroke-width="1.5"/>
+<text x="850" y="422" text-anchor="middle" fill="#F3F5F9" font-size="22" font-weight="400" font-family="sans-serif">Balance : 425 g</text>
+<text x="850" y="452" text-anchor="middle" fill="#FFC14D" font-size="15" font-weight="600" font-family="sans-serif">… Instable</text>
+
+<!-- Bottom-Left Context Bar -->
+<rect x="24" y="424" width="658" height="84" rx="16" fill="#131D2E" stroke="#2A3A55" stroke-width="1.5"/>
+<text x="42" y="456" fill="#F3F5F9" font-size="18" font-weight="600" font-family="sans-serif">Cuisson manuelle</text>
+<rect x="524" y="436" width="142" height="28" rx="14" fill="rgba(255,138,61,0.18)" stroke="#FF8A3D" stroke-width="1"/><text x="595" y="455" text-anchor="middle" fill="#FF8A3D" font-size="13.5" font-weight="600" font-family="sans-serif">Manuel</text>
+<text x="42" y="489" fill="#9CA8BC" font-size="15.5" font-family="sans-serif">Phase 1/2</text>
+
+<!-- Bottom-Left Status Pills -->
+
+  <rect x="24" y="524" width="154" height="52" rx="14" fill="#131D2E" stroke="#2A3A55" stroke-width="1.5"/>
+  <circle cx="42" cy="544" r="5" fill="#3DDC97"/>
+  <text x="54" y="546" fill="#9CA8BC" font-size="13" font-weight="600" font-family="sans-serif">Couvercle</text>
+  <text x="54" y="566" fill="#F3F5F9" font-size="16" font-weight="600" font-family="sans-serif">Fermé</text>
+
+  <rect x="192" y="524" width="154" height="52" rx="14" fill="#131D2E" stroke="#2A3A55" stroke-width="1.5"/>
+  <circle cx="210" cy="544" r="5" fill="#3DDC97"/>
+  <text x="222" y="546" fill="#9CA8BC" font-size="13" font-weight="600" font-family="sans-serif">Bol</text>
+  <text x="222" y="566" fill="#F3F5F9" font-size="16" font-weight="600" font-family="sans-serif">Présent</text>
+
+  <rect x="360" y="524" width="154" height="52" rx="14" fill="#131D2E" stroke="#2A3A55" stroke-width="1.5"/>
+  <circle cx="378" cy="544" r="5" fill="#5CC8FF"/>
+  <text x="390" y="546" fill="#9CA8BC" font-size="13" font-weight="600" font-family="sans-serif">Moteur</text>
+  <text x="390" y="566" fill="#F3F5F9" font-size="16" font-weight="600" font-family="sans-serif">Actif</text>
+
+  <rect x="528" y="524" width="154" height="52" rx="14" fill="#131D2E" stroke="#2A3A55" stroke-width="1.5"/>
+  <circle cx="546" cy="544" r="5" fill="#FF8A3D"/>
+  <text x="558" y="546" fill="#9CA8BC" font-size="13" font-weight="600" font-family="sans-serif">Chauffe</text>
+  <text x="558" y="566" fill="#F3F5F9" font-size="16" font-weight="600" font-family="sans-serif">Active</text>
+
+</svg>

@@ -1,0 +1,673 @@
+# Toque Companion — Monsieur Cuisine Connect interactive tile (fr)
+# Entity prefix: monsieur_cuisine_connect_ | Assets: /local/toque/
+# Requires: custom:button-card (HACS) and SVG files under /config/www/toque/
+type: picture-elements
+image: /local/toque/monsieur-cuisine-connect-frame.svg
+elements:
+- type: custom:button-card
+  entity: sensor.monsieur_cuisine_connect_status
+  name: Monsieur Cuisine Connect Toque screen
+  show_name: false
+  show_icon: false
+  triggers_update:
+  - sensor.monsieur_cuisine_connect_status
+  - sensor.monsieur_cuisine_connect_temperature
+  - sensor.monsieur_cuisine_connect_target_temperature
+  - sensor.monsieur_cuisine_connect_weight
+  - sensor.monsieur_cuisine_connect_speed_level
+  - sensor.monsieur_cuisine_connect_time_remaining
+  - sensor.monsieur_cuisine_connect_estimated_end
+  - sensor.monsieur_cuisine_connect_program
+  - sensor.monsieur_cuisine_connect_current_recipe
+  - sensor.monsieur_cuisine_connect_step
+  - sensor.monsieur_cuisine_connect_current_step
+  - sensor.monsieur_cuisine_connect_waiting_recipe
+  - sensor.monsieur_cuisine_connect_last_activity
+  - sensor.monsieur_cuisine_connect_base_link
+  - sensor.monsieur_cuisine_connect_fault_message
+  - binary_sensor.monsieur_cuisine_connect_bowl_present
+  - binary_sensor.monsieur_cuisine_connect_fault
+  - binary_sensor.monsieur_cuisine_connect_heater
+  - binary_sensor.monsieur_cuisine_connect_hot_contents
+  - binary_sensor.monsieur_cuisine_connect_lid_open
+  - binary_sensor.monsieur_cuisine_connect_motor
+  - binary_sensor.monsieur_cuisine_connect_scale_stable
+  - button.monsieur_cuisine_connect_pause
+  - button.monsieur_cuisine_connect_stop
+  - button.monsieur_cuisine_connect_tare_scale
+  - event.monsieur_cuisine_connect_cooking
+  update_timer: 30s
+  tap_action:
+    action: none
+  hold_action:
+    action: none
+  style:
+    left: 12.3333%
+    top: 25.8696%
+    width: 75.3333%
+    height: 57.6087%
+    transform-origin: 0 0
+    transform: none
+    z-index: 14
+    pointer-events: none
+  styles:
+    card:
+    - background: '#070E1B'
+    - border: '0'
+    - border-radius: 4px
+    - box-shadow: none
+    - padding: '0'
+    - height: 100%
+    - overflow: hidden
+    grid:
+    - display: block
+    - height: 100%
+    custom_fields:
+      screen:
+      - width: 100%
+      - height: 100%
+  custom_fields:
+    screen: "[[[\nconst P = \"monsieur_cuisine_connect_\";\nconst T = {\"title\": \"Monsieur Cuisine Connect · Toque\", \"\
+      idle_sub\": \"En veille · Prêt à cuisiner\", \"link_ready\": \"Base prête\", \"link_arming\": \"Initialisation\", \"\
+      link_lost\": \"Lien perdu\", \"link_offline\": \"Hors ligne\", \"link_unknown\": \"Inconnu\", \"st_idle\": \"Prêt\"\
+      , \"st_starting\": \"Démarrage\", \"st_running\": \"En cours\", \"st_paused\": \"En pause\", \"st_stopping\": \"Arrêt…\"\
+      , \"st_finished\": \"Terminé\", \"st_aborted\": \"Interrompu\", \"st_fault\": \"Erreur\", \"st_unavail\": \"Indisponible\"\
+      , \"end_ready\": \"Prêt\", \"end_prefix\": \"Fin \", \"end_paused\": \"En pause\", \"end_finished\": \"Terminé\", \"\
+      end_aborted\": \"Interrompu\", \"target_heat_on\": \"Chauffe active\", \"target_hot\": \"Chaud ≥60°\", \"target_set\"\
+      : \"Consigne\", \"target_no_heat\": \"Sans chauffe\", \"heat_on\": \"Chauffe ON\", \"heat_off\": \"Chauffe OFF\", \"\
+      spd_motor\": \"Moteur actif\", \"spd_stop\": \"Arrêt\", \"spd_stir\": \"Mélanger\", \"spd_chop\": \"Hacher\", \"spd_blend\"\
+      : \"Mixer\", \"spd_prefix\": \"Moteur · \", \"temp_hot\": \"CHAUD ≥60°\", \"temp_meas\": \"mesuré\", \"temp_cold\":\
+      \ \"base froide\", \"temp_offline\": \"hors ligne\", \"scale_lbl\": \"Balance\", \"scale_stable\": \"✓ Stable\", \"\
+      scale_unstable\": \"… Instable\", \"chip_hot\": \"CHAUD ≥60°\", \"chip_lid_open\": \"Couvercle ouvert\", \"chip_lid_closed\"\
+      : \"Couvercle fermé\", \"lbl_dur\": \"DURÉE\", \"lbl_temp\": \"TEMPÉRATURE\", \"lbl_spd\": \"VITESSE\", \"dir_rev\"\
+      : \"↺ Sens inverse\", \"dir_fwd\": \"↻ Sens normal\", \"acc_whisk\": \"Fouet\", \"acc_blade\": \"Lame\", \"pill_lid\"\
+      : \"Couvercle\", \"pill_lid_open\": \"Ouvert\", \"pill_lid_closed\": \"Fermé\", \"pill_bowl\": \"Bol\", \"pill_bowl_on\"\
+      : \"Présent\", \"pill_bowl_off\": \"Absent\", \"pill_motor\": \"Moteur\", \"pill_motor_on\": \"Actif\", \"pill_motor_off\"\
+      : \"Arrêt\", \"pill_heat\": \"Chauffe\", \"pill_heat_on\": \"Active\", \"pill_heat_off\": \"Arrêt\", \"step_prefix\"\
+      : \"Étape \", \"recipe_lbl\": \"Recette\", \"recipe_wait\": \"En attente : \", \"recipe_sub\": \"Recette guidée en cours\"\
+      , \"wait_prefix\": \"Recette prête : \", \"wait_badge\": \"En attente\", \"wait_sub\": \"Sélectionnée sur l’écran du\
+      \ robot\", \"last_prefix\": \"Dernière activité : \", \"last_badge\": \"Historique\", \"last_sub\": \"Session précédente\
+      \ terminée\", \"fault_default\": \"Défaut détecté\", \"phase_prefix\": \"Phase \"};\nconst s = k => states['sensor.'\
+      \ + P + k];\nconst b = k => states['binary_sensor.' + P + k];\nconst e = k => states['event.' + P + k];\nconst validStr\
+      \ = v => typeof v === 'string' && v.trim() !== '' && !['unknown', 'unavailable', 'none', 'null'].includes(v.trim().toLowerCase());\n\
+      const num = obj => {\n  const raw = obj?.state;\n  const n = Number(raw);\n  return typeof raw === 'string' && raw.trim()\
+      \ !== '' && Number.isFinite(n) ? n : null;\n};\nconst esc = v => String(v ?? '').replace(/&/g, '&amp;').replace(/</g,\
+      \ '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;').replace(/'/g, '&#39;');\nconst trunc = (v, n) => { const t\
+      \ = String(v ?? '').trim(); return t.length > n ? t.slice(0, n - 1) + '…' : t; };\n\nconst statusRaw = (s('status')?.state\
+      \ || 'unknown').toLowerCase();\nconst linkRaw = (s('base_link')?.state || 'unknown').toLowerCase();\nconst linkLabel\
+      \ = validStr(s('base_link')?.attributes?.label) ? s('base_link').attributes.label :\n  ({ready: T.link_ready, arming:\
+      \ T.link_arming, lost: T.link_lost, offline: T.link_offline}[linkRaw] || T.link_unknown);\nconst linkColor = linkRaw\
+      \ === 'ready' ? '#3DDC97' : linkRaw === 'arming' ? '#FFC14D' : linkRaw === 'lost' || linkRaw === 'offline' ? '#FF5A5F'\
+      \ : '#66738A';\n\nconst statusMeta = {\n  idle: [T.st_idle, '#3DDC97'],\n  starting: [T.st_starting, '#FF8A3D'],\n \
+      \ running: [T.st_running, '#FF8A3D'],\n  paused: [T.st_paused, '#FFC14D'],\n  stopping: [T.st_stopping, '#FF8A3D'],\n\
+      \  finished: [T.st_finished, '#3DDC97'],\n  aborted: [T.st_aborted, '#FFC14D'],\n  fault: [T.st_fault, '#FF5A5F'],\n\
+      }[statusRaw] || [T.st_unavail, '#66738A'];\n\nconst temp = num(s('temperature'));\nconst target = num(s('target_temperature'));\n\
+      const speed = num(s('speed_level'));\nconst weight = num(s('weight'));\nconst remObj = s('time_remaining');\nconst remVal\
+      \ = num(remObj);\nconst remUnit = String(remObj?.attributes?.unit_of_measurement || 'min').toLowerCase();\nlet remSec\
+      \ = remVal !== null ? Math.max(0, Math.round(remUnit.startsWith('min') ? remVal * 60 : remVal)) : null;\nconst estRaw\
+      \ = s('estimated_end')?.state;\nconst estMs = validStr(estRaw) ? Date.parse(estRaw) : NaN;\nif (remSec === null && Number.isFinite(estMs)\
+      \ && ['starting', 'running'].includes(statusRaw)) {\n  remSec = Math.max(0, Math.round((estMs - Date.now()) / 1000));\n\
+      }\n\nconst bowlOn = b('bowl_present')?.state === 'on';\nconst lidOpen = b('lid_open')?.state === 'on';\nconst motorOn\
+      \ = b('motor')?.state === 'on';\nconst heaterOn = b('heater')?.state === 'on';\nconst hotOn = b('hot_contents')?.state\
+      \ === 'on';\nconst scaleStable = b('scale_stable')?.state === 'on';\nconst faultOn = b('fault')?.state === 'on' || statusRaw\
+      \ === 'fault';\nconst faultMsgObj = s('fault_message');\nconst faultText = validStr(faultMsgObj?.state) ? faultMsgObj.state\
+      \ : validStr(b('fault')?.attributes?.message) ? b('fault').attributes.message : '';\nconst faultCode = faultMsgObj?.attributes?.code\
+      \ ?? b('fault')?.attributes?.code ?? null;\n\nconst progObj = s('program');\nconst progName = validStr(progObj?.state)\
+      \ ? progObj.state : '';\nconst progAttrs = progObj?.attributes || {};\nconst reverseOn = progAttrs.reverse === true;\n\
+      const accessoryRaw = String(progAttrs.accessory || '').toLowerCase();\nconst isWhisk = accessoryRaw.includes('whisk')\
+      \ || accessoryRaw.includes('fouet');\nconst phaseStr = (progAttrs.phase && progAttrs.phase_count) ? `${T.phase_prefix}${progAttrs.phase}/${progAttrs.phase_count}`\
+      \ : '';\n\nconst recipeObj = s('current_recipe');\nconst recipeName = validStr(recipeObj?.state) ? recipeObj.state :\
+      \ '';\nconst stepLabel = validStr(s('step')?.state) ? s('step').state : '';\nconst curStepObj = s('current_step');\n\
+      const curStepText = validStr(curStepObj?.attributes?.text) ? curStepObj.attributes.text : validStr(curStepObj?.state)\
+      \ ? curStepObj.state : '';\nconst waitRecipe = validStr(s('waiting_recipe')?.state) ? s('waiting_recipe').state : '';\n\
+      const lastActObj = s('last_activity');\nconst lastAct = validStr(lastActObj?.state) ? lastActObj.state : '';\nconst\
+      \ cookEv = e('cooking')?.attributes?.event_type;\n\nconst activeRun = ['starting', 'running'].includes(statusRaw);\n\
+      const activePause = statusRaw === 'paused';\n\nlet durText = '—';\nif (remSec !== null && (remSec > 0 || activeRun ||\
+      \ activePause)) {\n  if (remSec >= 3600) {\n    const h = Math.floor(remSec / 3600);\n    const m = Math.floor((remSec\
+      \ % 3600) / 60);\n    durText = h + 'h' + String(m).padStart(2, '0');\n  } else {\n    const m = Math.floor(remSec /\
+      \ 60);\n    const sec = remSec % 60;\n    durText = String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');\n\
+      \  }\n}\nlet endText = T.end_ready;\nif (Number.isFinite(estMs)) {\n  const dt = new Date(estMs);\n  endText = T.end_prefix\
+      \ + String(dt.getHours()).padStart(2, '0') + ':' + String(dt.getMinutes()).padStart(2, '0');\n} else if (activePause)\
+      \ {\n  endText = validStr(progAttrs.pause_label) ? trunc(progAttrs.pause_label, 20) : T.end_paused;\n} else if (statusRaw\
+      \ === 'finished') {\n  endText = T.end_finished;\n} else if (statusRaw === 'aborted') {\n  endText = T.end_aborted;\n\
+      }\n\nconst targetText = (target !== null && target > 0) ? Math.round(target) + '°' : '—';\nconst targetSub = heaterOn\
+      \ ? T.target_heat_on : hotOn ? T.target_hot : (target !== null && target > 0) ? T.target_set : T.target_no_heat;\nconst\
+      \ targetSubColor = heaterOn ? '#FF8A3D' : hotOn ? '#FF5A5F' : '#9CA8BC';\n\nconst speedNum = speed !== null ? Math.max(0,\
+      \ Math.min(10, Math.round(speed))) : 0;\nconst speedMode = speedNum === 0 ? T.spd_stop : speedNum <= 3 ? T.spd_stir\
+      \ : speedNum <= 6 ? T.spd_chop : T.spd_blend;\nconst speedDesc = motorOn ? (speedNum > 0 ? T.spd_prefix + speedMode\
+      \ : T.spd_motor) : speedMode;\nconst speedSubColor = motorOn ? '#5CC8FF' : '#9CA8BC';\n\nconst tempKnown = temp !==\
+      \ null && temp > 0;\nconst tempDisplay = tempKnown ? Math.round(temp) + '°' : (linkRaw === 'ready' ? '<37°' : '—');\n\
+      const tempSub = hotOn ? T.temp_hot : tempKnown ? T.temp_meas : (linkRaw === 'ready' ? T.temp_cold : T.temp_offline);\n\
+      const tempArcPct = tempKnown ? Math.max(0, Math.min(1, temp / 130)) : 0;\nconst ringLen = 490.088;\nconst ringOffset\
+      \ = ringLen * (1 - tempArcPct);\nconst ringColor = (heaterOn || hotOn || (temp !== null && temp >= 60)) ? '#FF8A3D'\
+      \ : '#5CC8FF';\n\nlet targetTick = '';\nif (target !== null && target > 0) {\n  const deg = 135 + 270 * Math.max(0,\
+      \ Math.min(1, target / 130));\n  const rad = deg * Math.PI / 180;\n  const x1 = (850 + 93 * Math.cos(rad)).toFixed(1);\n\
+      \  const y1 = (224 + 93 * Math.sin(rad)).toFixed(1);\n  const x2 = (850 + 115 * Math.cos(rad)).toFixed(1);\n  const\
+      \ y2 = (224 + 115 * Math.sin(rad)).toFixed(1);\n  targetTick = `<line x1=\"${x1}\" y1=\"${y1}\" x2=\"${x2}\" y2=\"${y2}\"\
+      \ stroke=\"#F3F5F9\" stroke-width=\"3.5\" stroke-linecap=\"round\"/>`;\n}\n\nlet rpmBars = '';\nfor (let i = 1; i <=\
+      \ 10; i++) {\n  const bx = 774 + (i - 1) * 15.5;\n  const bh = 10 + i * 1.8;\n  const by = 342 - bh;\n  const lit =\
+      \ i <= speedNum && (motorOn || activeRun || activePause);\n  const fill = lit ? (heaterOn ? '#FF8A3D' : '#5CC8FF') :\
+      \ '#223048';\n  rpmBars += `<rect x=\"${bx.toFixed(1)}\" y=\"${by.toFixed(1)}\" width=\"11\" height=\"${bh.toFixed(1)}\"\
+      \ rx=\"3\" fill=\"${fill}\"/>`;\n}\n\nconst weightText = weight !== null ? Math.round(weight) + ' g' : '—';\nconst scaleTag\
+      \ = scaleStable ? T.scale_stable : T.scale_unstable;\nconst scaleColor = scaleStable ? '#3DDC97' : '#FFC14D';\n\nconst\
+      \ durStroke = activeRun ? '#FF8A3D' : activePause ? '#FFC14D' : '#2A3A55';\nconst durStrokeW = (activeRun || activePause)\
+      \ ? 2.5 : 1.5;\nconst tempStroke = heaterOn ? '#FF8A3D' : '#2A3A55';\nconst tempStrokeW = heaterOn ? 2.5 : 1.5;\nconst\
+      \ spdStroke = motorOn ? '#5CC8FF' : '#2A3A55';\nconst spdStrokeW = motorOn ? 2.5 : 1.5;\n\nlet ctxLine1 = T.title;\n\
+      let ctxLine2 = T.idle_sub;\nlet ctxBadge = '';\nif (recipeName) {\n  ctxLine1 = trunc(recipeName, 44);\n  ctxBadge =\
+      \ stepLabel ? T.step_prefix + trunc(stepLabel, 10) : T.recipe_lbl;\n  ctxLine2 = curStepText ? trunc(curStepText, 64)\
+      \ : validStr(curStepObj?.attributes?.weigh_label) ? trunc(curStepObj.attributes.weigh_label, 64) : validStr(recipeObj?.attributes?.waiting_for)\
+      \ ? T.recipe_wait + trunc(recipeObj.attributes.waiting_for, 46) : T.recipe_sub;\n} else if (progName) {\n  ctxLine1\
+      \ = trunc(progName, 44);\n  ctxBadge = validStr(progAttrs.kind_label) ? trunc(progAttrs.kind_label, 14) : '';\n  ctxLine2\
+      \ = validStr(progAttrs.pause_label) ? trunc(progAttrs.pause_label, 62) : validStr(progAttrs.end_reason) ? trunc(progAttrs.end_reason,\
+      \ 62) : (phaseStr || statusMeta[0]);\n} else if (waitRecipe) {\n  ctxLine1 = T.wait_prefix + trunc(waitRecipe, 36);\n\
+      \  ctxBadge = T.wait_badge;\n  ctxLine2 = T.wait_sub;\n} else if (lastAct) {\n  ctxLine1 = T.last_prefix + trunc(lastAct,\
+      \ 34);\n  ctxBadge = validStr(lastActObj?.attributes?.outcome) ? trunc(lastActObj.attributes.outcome, 14) : T.last_badge;\n\
+      \  ctxLine2 = validStr(lastActObj?.attributes?.summary) ? trunc(lastActObj.attributes.summary, 64) : T.last_sub;\n}\
+      \ else if (validStr(cookEv)) {\n  ctxBadge = trunc(cookEv, 16);\n}\n\nconst faultBanner = (faultOn || faultText) ? `<g>\n\
+      \  <rect x=\"24\" y=\"64\" width=\"658\" height=\"28\" rx=\"8\" fill=\"#3B151D\" stroke=\"#FF5A5F\" stroke-width=\"\
+      1.5\"/>\n  <text x=\"40\" y=\"83\" fill=\"#FFD6D8\" font-size=\"13.5\" font-weight=\"600\" font-family=\"sans-serif\"\
+      >⚠ ${esc(trunc(faultText || T.fault_default, 60))}${faultCode !== null ? ' (' + esc(faultCode) + ')' : ''}</text>\n\
+      </g>` : '';\nconst cardY = (faultOn || faultText) ? 100 : 78;\nconst cardH = (faultOn || faultText) ? 310 : 332;\n\n\
+      const chipTempFill = hotOn ? '#3D151B' : '#1A2639';\nconst chipTempStroke = hotOn ? '#FF5A5F' : '#2A3A55';\nconst chipTempText\
+      \ = hotOn ? T.chip_hot : (tempKnown ? Math.round(temp) + ' °C' : '<37 °C');\nconst chipTempCol = hotOn ? '#FF8084' :\
+      \ '#F3F5F9';\n\nconst chipLidFill = lidOpen ? '#3B2D12' : '#1A2639';\nconst chipLidStroke = lidOpen ? '#FFC14D' : '#2A3A55';\n\
+      const chipLidText = lidOpen ? T.chip_lid_open : T.chip_lid_closed;\nconst chipLidCol = lidOpen ? '#FFC14D' : '#9CA8BC';\n\
+      \nconst pills = [\n  [T.pill_lid, lidOpen ? T.pill_lid_open : T.pill_lid_closed, lidOpen ? '#FFC14D' : '#3DDC97', 24],\n\
+      \  [T.pill_bowl, bowlOn ? T.pill_bowl_on : T.pill_bowl_off, bowlOn ? '#3DDC97' : '#FF5A5F', 192],\n  [T.pill_motor,\
+      \ motorOn ? T.pill_motor_on : T.pill_motor_off, motorOn ? '#5CC8FF' : '#66738A', 360],\n  [T.pill_heat, heaterOn ? T.pill_heat_on\
+      \ : T.pill_heat_off, heaterOn ? '#FF8A3D' : '#66738A', 528],\n];\nconst pillsSvg = pills.map(([lbl, val, col, px]) =>\
+      \ `\n  <rect x=\"${px}\" y=\"524\" width=\"154\" height=\"52\" rx=\"14\" fill=\"#131D2E\" stroke=\"#2A3A55\" stroke-width=\"\
+      1.5\"/>\n  <circle cx=\"${px + 18}\" cy=\"544\" r=\"5\" fill=\"${col}\"/>\n  <text x=\"${px + 30}\" y=\"546\" fill=\"\
+      #9CA8BC\" font-size=\"13\" font-weight=\"600\" font-family=\"sans-serif\">${esc(lbl)}</text>\n  <text x=\"${px + 30}\"\
+      \ y=\"566\" fill=\"#F3F5F9\" font-size=\"16\" font-weight=\"600\" font-family=\"sans-serif\">${esc(val)}</text>\n`).join('');\n\
+      \nreturn `<svg viewBox=\"0 0 1024 600\" width=\"100%\" height=\"100%\" preserveAspectRatio=\"xMidYMid meet\" xmlns=\"\
+      http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Toque interface ${esc(statusMeta[0])}\">\n<defs>\n  <linearGradient\
+      \ id=\"tqBg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n    <stop offset=\"0%\" stop-color=\"#16294A\"/>\n    <stop offset=\"\
+      52%\" stop-color=\"#0D1A31\"/>\n    <stop offset=\"100%\" stop-color=\"#070E1B\"/>\n  </linearGradient>\n</defs>\n<rect\
+      \ width=\"1024\" height=\"600\" fill=\"url(#tqBg)\"/>\n\n<circle cx=\"38\" cy=\"36\" r=\"7\" fill=\"${statusMeta[1]}\"\
+      />\n<text x=\"54\" y=\"43\" fill=\"#F3F5F9\" font-size=\"24\" font-weight=\"600\" font-family=\"sans-serif\">Toque</text>\n\
+      <rect x=\"132\" y=\"19\" width=\"136\" height=\"34\" rx=\"17\" fill=\"#1A2639\" stroke=\"#2A3A55\" stroke-width=\"1.5\"\
+      />\n<text x=\"200\" y=\"41\" text-anchor=\"middle\" fill=\"${statusMeta[1]}\" font-size=\"15\" font-weight=\"600\" font-family=\"\
+      sans-serif\">${esc(statusMeta[0])}</text>\n\n<rect x=\"434\" y=\"18\" width=\"140\" height=\"36\" rx=\"18\" fill=\"\
+      ${chipTempFill}\" stroke=\"${chipTempStroke}\" stroke-width=\"1.5\"/>\n<text x=\"504\" y=\"41\" text-anchor=\"middle\"\
+      \ fill=\"${chipTempCol}\" font-size=\"15\" font-weight=\"600\" font-family=\"sans-serif\">${esc(chipTempText)}</text>\n\
+      \n<rect x=\"584\" y=\"18\" width=\"172\" height=\"36\" rx=\"18\" fill=\"${chipLidFill}\" stroke=\"${chipLidStroke}\"\
+      \ stroke-width=\"1.5\"/>\n<text x=\"670\" y=\"41\" text-anchor=\"middle\" fill=\"${chipLidCol}\" font-size=\"15\" font-weight=\"\
+      600\" font-family=\"sans-serif\">${esc(chipLidText)}</text>\n\n<rect x=\"766\" y=\"18\" width=\"234\" height=\"36\"\
+      \ rx=\"18\" fill=\"#1A2639\" stroke=\"#2A3A55\" stroke-width=\"1.5\"/>\n<circle cx=\"786\" cy=\"36\" r=\"5.5\" fill=\"\
+      ${linkColor}\"/>\n<text x=\"800\" y=\"41\" fill=\"#F3F5F9\" font-size=\"15\" font-weight=\"600\" font-family=\"sans-serif\"\
+      >${esc(trunc(linkLabel, 19))}</text>\n\n${faultBanner}\n\n<rect x=\"24\" y=\"${cardY}\" width=\"210\" height=\"${cardH}\"\
+      \ rx=\"20\" fill=\"#131D2E\" stroke=\"${durStroke}\" stroke-width=\"${durStrokeW}\"/>\n<circle cx=\"48\" cy=\"${cardY\
+      \ + 33}\" r=\"8.5\" fill=\"none\" stroke=\"#FF8A3D\" stroke-width=\"2\"/>\n<path d=\"M48 ${cardY + 28} v5 l3.5 2\" fill=\"\
+      none\" stroke=\"#FF8A3D\" stroke-width=\"2\" stroke-linecap=\"round\"/>\n<text x=\"66\" y=\"${cardY + 39}\" fill=\"\
+      #9CA8BC\" font-size=\"16\" font-weight=\"700\" letter-spacing=\"0.8\" font-family=\"sans-serif\">${esc(T.lbl_dur)}</text>\n\
+      <text x=\"42\" y=\"${cardY + 128}\" fill=\"#F3F5F9\" font-size=\"56\" font-weight=\"300\" font-family=\"sans-serif\"\
+      >${esc(durText)}</text>\n<text x=\"42\" y=\"${cardY + 168}\" fill=\"#9CA8BC\" font-size=\"18\" font-family=\"sans-serif\"\
+      >${esc(endText)}</text>\n${phaseStr ? `<rect x=\"42\" y=\"${cardY + 194}\" width=\"132\" height=\"30\" rx=\"15\" fill=\"\
+      #1A2639\" stroke=\"#2A3A55\"/><text x=\"108\" y=\"${cardY + 214}\" text-anchor=\"middle\" fill=\"#5CC8FF\" font-size=\"\
+      14\" font-weight=\"600\" font-family=\"sans-serif\">${esc(phaseStr)}</text>` : ''}\n\n<rect x=\"248\" y=\"${cardY}\"\
+      \ width=\"210\" height=\"${cardH}\" rx=\"20\" fill=\"#131D2E\" stroke=\"${tempStroke}\" stroke-width=\"${tempStrokeW}\"\
+      />\n<text x=\"270\" y=\"${cardY + 39}\" fill=\"#9CA8BC\" font-size=\"16\" font-weight=\"700\" letter-spacing=\"0.6\"\
+      \ font-family=\"sans-serif\">${esc(T.lbl_temp)}</text>\n<text x=\"266\" y=\"${cardY + 128}\" fill=\"#F3F5F9\" font-size=\"\
+      58\" font-weight=\"300\" font-family=\"sans-serif\">${esc(targetText)}</text>\n<text x=\"266\" y=\"${cardY + 168}\"\
+      \ fill=\"${targetSubColor}\" font-size=\"18\" font-weight=\"${heaterOn || hotOn ? '600' : '400'}\" font-family=\"sans-serif\"\
+      >${esc(targetSub)}</text>\n<rect x=\"266\" y=\"${cardY + 252}\" width=\"174\" height=\"38\" rx=\"14\" fill=\"${heaterOn\
+      \ ? 'rgba(255,138,61,0.18)' : '#1A2639'}\" stroke=\"${heaterOn ? '#FF8A3D' : '#2A3A55'}\"/>\n<text x=\"353\" y=\"${cardY\
+      \ + 277}\" text-anchor=\"middle\" fill=\"${heaterOn ? '#FF8A3D' : '#9CA8BC'}\" font-size=\"16\" font-weight=\"600\"\
+      \ font-family=\"sans-serif\">${esc(heaterOn ? T.heat_on : T.heat_off)}</text>\n\n<rect x=\"472\" y=\"${cardY}\" width=\"\
+      210\" height=\"${cardH}\" rx=\"20\" fill=\"#131D2E\" stroke=\"${spdStroke}\" stroke-width=\"${spdStrokeW}\"/>\n<text\
+      \ x=\"494\" y=\"${cardY + 39}\" fill=\"#9CA8BC\" font-size=\"16\" font-weight=\"700\" letter-spacing=\"0.8\" font-family=\"\
+      sans-serif\">${esc(T.lbl_spd)}</text>\n<text x=\"490\" y=\"${cardY + 128}\" fill=\"#F3F5F9\" font-size=\"58\" font-weight=\"\
+      300\" font-family=\"sans-serif\">${speedNum}</text>\n<text x=\"490\" y=\"${cardY + 168}\" fill=\"${speedSubColor}\"\
+      \ font-size=\"18\" font-weight=\"${motorOn ? '600' : '400'}\" font-family=\"sans-serif\">${esc(speedDesc)}</text>\n\n\
+      <rect x=\"490\" y=\"${cardY + 206}\" width=\"174\" height=\"36\" rx=\"18\" fill=\"${reverseOn ? '#FF8A3D' : '#1A2639'}\"\
+      \ stroke=\"${reverseOn ? '#FF8A3D' : '#2A3A55'}\"/>\n<text x=\"577\" y=\"${cardY + 230}\" text-anchor=\"middle\" fill=\"\
+      ${reverseOn ? '#070E1B' : '#F3F5F9'}\" font-size=\"15.5\" font-weight=\"600\" font-family=\"sans-serif\">${esc(reverseOn\
+      \ ? T.dir_rev : T.dir_fwd)}</text>\n\n<rect x=\"490\" y=\"${cardY + 252}\" width=\"174\" height=\"36\" rx=\"18\" fill=\"\
+      #1A2639\" stroke=\"#2A3A55\"/>\n<text x=\"577\" y=\"${cardY + 276}\" text-anchor=\"middle\" fill=\"#9CA8BC\" font-size=\"\
+      15.5\" font-weight=\"600\" font-family=\"sans-serif\">${esc(isWhisk ? T.acc_whisk : T.acc_blade)}</text>\n\n<rect x=\"\
+      700\" y=\"78\" width=\"300\" height=\"498\" rx=\"22\" fill=\"#131D2E\" stroke=\"#2A3A55\" stroke-width=\"1.5\"/>\n<path\
+      \ d=\"M 776.46 297.54 A 104 104 0 1 1 923.54 297.54\" fill=\"none\" stroke=\"#223048\" stroke-width=\"14\" stroke-linecap=\"\
+      round\"/>\n<path d=\"M 776.46 297.54 A 104 104 0 1 1 923.54 297.54\" fill=\"none\" stroke=\"${ringColor}\" stroke-width=\"\
+      14\" stroke-linecap=\"round\" stroke-dasharray=\"${ringLen.toFixed(3)} 653.451\" stroke-dashoffset=\"${ringOffset.toFixed(3)}\"\
+      />\n${targetTick}\n<text x=\"850\" y=\"226\" text-anchor=\"middle\" fill=\"#F3F5F9\" font-size=\"${tempKnown ? '56'\
+      \ : '44'}\" font-weight=\"300\" font-family=\"sans-serif\">${esc(tempDisplay)}</text>\n<text x=\"850\" y=\"258\" text-anchor=\"\
+      middle\" fill=\"${hotOn ? '#FF5A5F' : '#9CA8BC'}\" font-size=\"17\" font-weight=\"${hotOn ? '700' : '400'}\" font-family=\"\
+      sans-serif\">${esc(tempSub)}</text>\n${rpmBars}\n\n<line x1=\"726\" y1=\"382\" x2=\"974\" y2=\"382\" stroke=\"#223048\"\
+      \ stroke-width=\"1.5\"/>\n<text x=\"850\" y=\"422\" text-anchor=\"middle\" fill=\"#F3F5F9\" font-size=\"22\" font-weight=\"\
+      400\" font-family=\"sans-serif\">${esc(T.scale_lbl)} : ${esc(weightText)}</text>\n<text x=\"850\" y=\"452\" text-anchor=\"\
+      middle\" fill=\"${scaleColor}\" font-size=\"15\" font-weight=\"600\" font-family=\"sans-serif\">${esc(scaleTag)}</text>\n\
+      \n<rect x=\"24\" y=\"424\" width=\"658\" height=\"84\" rx=\"16\" fill=\"#131D2E\" stroke=\"#2A3A55\" stroke-width=\"\
+      1.5\"/>\n<text x=\"42\" y=\"456\" fill=\"#F3F5F9\" font-size=\"18\" font-weight=\"600\" font-family=\"sans-serif\">${esc(ctxLine1)}</text>\n\
+      ${ctxBadge ? `<rect x=\"524\" y=\"436\" width=\"142\" height=\"28\" rx=\"14\" fill=\"rgba(255,138,61,0.18)\" stroke=\"\
+      #FF8A3D\" stroke-width=\"1\"/><text x=\"595\" y=\"455\" text-anchor=\"middle\" fill=\"#FF8A3D\" font-size=\"13.5\" font-weight=\"\
+      600\" font-family=\"sans-serif\">${esc(ctxBadge)}</text>` : ''}\n<text x=\"42\" y=\"489\" fill=\"#9CA8BC\" font-size=\"\
+      15.5\" font-family=\"sans-serif\">${esc(ctxLine2)}</text>\n\n${pillsSvg}\n</svg>`;\n]]]"
+- type: custom:button-card
+  entity: button.monsieur_cuisine_connect_pause
+  name: Pause
+  show_name: false
+  show_icon: false
+  triggers_update:
+  - button.monsieur_cuisine_connect_pause
+  - sensor.monsieur_cuisine_connect_status
+  - sensor.monsieur_cuisine_connect_base_link
+  tap_action:
+    action: perform-action
+    perform_action: button.press
+    target:
+      entity_id: button.monsieur_cuisine_connect_pause
+  hold_action:
+    action: more-info
+    entity: button.monsieur_cuisine_connect_pause
+  style:
+    left: 68.0976%
+    top: 76.0852%
+    width: 6.1797%
+    height: 6.7210%
+    z-index: 25
+  styles:
+    card:
+    - height: 100%
+    - padding: '0'
+    - border: '0'
+    - background: transparent
+    - box-shadow: none
+    - cursor: '[[[ return entity?.state === ''unavailable'' ? ''default'' : ''pointer''; ]]]'
+    grid:
+    - display: block
+    - height: 100%
+    custom_fields:
+      btn:
+      - width: 100%
+      - height: 100%
+  custom_fields:
+    btn: '[[[
+
+      const off = entity?.state === ''unavailable'';
+
+      const bg = off ? ''#223048'' : ''#FF8A3D'';
+
+      const bd = off ? ''#2A3A55'' : ''#FF8A3D'';
+
+      const fg = off ? ''#66738A'' : ''#070E1B'';
+
+      const op = off ? ''0.45'' : ''1'';
+
+      return `<svg viewBox="0 0 84 68" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+      role="img" aria-label="Pause" style="opacity:${op}">
+
+      <rect x="2" y="2" width="80" height="64" rx="18" fill="${bg}" stroke="${bd}" stroke-width="2"/>
+
+      <rect x="33" y="14" width="6" height="20" rx="2" fill="${fg}"/><rect x="45" y="14" width="6" height="20" rx="2" fill="${fg}"/>
+
+      <text x="42" y="56" text-anchor="middle" fill="${fg}" font-size="18" font-weight="700" font-family="sans-serif">Pause</text>
+
+      </svg>`;
+
+      ]]]'
+- type: custom:button-card
+  entity: button.monsieur_cuisine_connect_stop
+  name: Stop
+  show_name: false
+  show_icon: false
+  triggers_update:
+  - button.monsieur_cuisine_connect_stop
+  - sensor.monsieur_cuisine_connect_status
+  - sensor.monsieur_cuisine_connect_base_link
+  tap_action:
+    action: perform-action
+    perform_action: button.press
+    target:
+      entity_id: button.monsieur_cuisine_connect_stop
+  hold_action:
+    action: more-info
+    entity: button.monsieur_cuisine_connect_stop
+  style:
+    left: 74.8658%
+    top: 76.0852%
+    width: 6.1797%
+    height: 6.7210%
+    z-index: 25
+  styles:
+    card:
+    - height: 100%
+    - padding: '0'
+    - border: '0'
+    - background: transparent
+    - box-shadow: none
+    - cursor: '[[[ return entity?.state === ''unavailable'' ? ''default'' : ''pointer''; ]]]'
+    grid:
+    - display: block
+    - height: 100%
+    custom_fields:
+      btn:
+      - width: 100%
+      - height: 100%
+  custom_fields:
+    btn: '[[[
+
+      const off = entity?.state === ''unavailable'';
+
+      const bg = off ? ''#223048'' : ''#FF5A5F'';
+
+      const bd = off ? ''#2A3A55'' : ''#FF5A5F'';
+
+      const fg = off ? ''#66738A'' : ''#FFFFFF'';
+
+      const op = off ? ''0.45'' : ''1'';
+
+      return `<svg viewBox="0 0 84 68" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+      role="img" aria-label="Stop" style="opacity:${op}">
+
+      <rect x="2" y="2" width="80" height="64" rx="18" fill="${bg}" stroke="${bd}" stroke-width="2"/>
+
+      <rect x="32" y="14" width="20" height="20" rx="3" fill="${fg}"/>
+
+      <text x="42" y="56" text-anchor="middle" fill="${fg}" font-size="18" font-weight="700" font-family="sans-serif">Stop</text>
+
+      </svg>`;
+
+      ]]]'
+- type: custom:button-card
+  entity: button.monsieur_cuisine_connect_tare_scale
+  name: Tare
+  show_name: false
+  show_icon: false
+  triggers_update:
+  - button.monsieur_cuisine_connect_tare_scale
+  - sensor.monsieur_cuisine_connect_status
+  - sensor.monsieur_cuisine_connect_base_link
+  tap_action:
+    action: perform-action
+    perform_action: button.press
+    target:
+      entity_id: button.monsieur_cuisine_connect_tare_scale
+  hold_action:
+    action: more-info
+    entity: button.monsieur_cuisine_connect_tare_scale
+  style:
+    left: 81.6341%
+    top: 76.0852%
+    width: 6.1797%
+    height: 6.7210%
+    z-index: 25
+  styles:
+    card:
+    - height: 100%
+    - padding: '0'
+    - border: '0'
+    - background: transparent
+    - box-shadow: none
+    - cursor: '[[[ return entity?.state === ''unavailable'' ? ''default'' : ''pointer''; ]]]'
+    grid:
+    - display: block
+    - height: 100%
+    custom_fields:
+      btn:
+      - width: 100%
+      - height: 100%
+  custom_fields:
+    btn: '[[[
+
+      const off = entity?.state === ''unavailable'';
+
+      const bg = off ? ''#223048'' : ''#223048'';
+
+      const bd = off ? ''#2A3A55'' : ''#5CC8FF'';
+
+      const fg = off ? ''#66738A'' : ''#5CC8FF'';
+
+      const op = off ? ''0.45'' : ''1'';
+
+      return `<svg viewBox="0 0 84 68" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+      role="img" aria-label="Tare" style="opacity:${op}">
+
+      <rect x="2" y="2" width="80" height="64" rx="18" fill="${bg}" stroke="${bd}" stroke-width="2"/>
+
+      <path d="M27 25 h30 M42 14 v11 M31 25 l-3 7 h6 z M53 25 l-3 7 h6 z M35 35 h14" fill="none" stroke="${fg}" stroke-width="2.2"
+      stroke-linecap="round" stroke-linejoin="round"/>
+
+      <text x="42" y="56" text-anchor="middle" fill="${fg}" font-size="18" font-weight="700" font-family="sans-serif">Tare</text>
+
+      </svg>`;
+
+      ]]]'
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Toque status
+  tap_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_status
+  hold_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_status
+  style:
+    left: 22.9270%
+    top: 29.4221%
+    width: 18.5391%
+    height: 4.8007%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Bowl temperature alert
+  tap_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_hot_contents
+  hold_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_hot_contents
+  style:
+    left: 49.4114%
+    top: 29.3261%
+    width: 10.2995%
+    height: 4.2246%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Lid state
+  tap_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_lid_open
+  hold_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_lid_open
+  style:
+    left: 61.6236%
+    top: 29.3261%
+    width: 12.6536%
+    height: 4.2246%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Base link
+  tap_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_base_link
+  hold_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_base_link
+  style:
+    left: 77.4407%
+    top: 29.3261%
+    width: 17.5091%
+    height: 4.2246%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Remaining time
+  tap_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_time_remaining
+  hold_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_time_remaining
+  style:
+    left: 21.8235%
+    top: 49.2971%
+    width: 15.4492%
+    height: 31.8768%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Target temperature
+  tap_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_target_temperature
+  hold_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_target_temperature
+  style:
+    left: 38.3027%
+    top: 49.2971%
+    width: 15.4492%
+    height: 31.8768%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Speed level
+  tap_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_speed_level
+  hold_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_speed_level
+  style:
+    left: 54.7818%
+    top: 49.2971%
+    width: 15.4492%
+    height: 31.8768%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Measured bowl temperature
+  tap_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_temperature
+  hold_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_temperature
+  style:
+    left: 74.8658%
+    top: 47.9529%
+    width: 21.1875%
+    height: 28.0362%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Scale weight
+  tap_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_weight
+  hold_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_weight
+  style:
+    left: 74.8658%
+    top: 67.2518%
+    width: 21.1875%
+    height: 8.6413%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Program / active recipe
+  tap_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_program
+  hold_action:
+    action: more-info
+    entity: sensor.monsieur_cuisine_connect_program
+  style:
+    left: 38.3027%
+    top: 70.6124%
+    width: 48.4075%
+    height: 8.0652%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Lid status pill
+  tap_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_lid_open
+  hold_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_lid_open
+  style:
+    left: 19.7636%
+    top: 78.6776%
+    width: 11.3294%
+    height: 4.9928%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Bowl status pill
+  tap_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_bowl_present
+  hold_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_bowl_present
+  style:
+    left: 32.1230%
+    top: 78.6776%
+    width: 11.3294%
+    height: 4.9928%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Motor status pill
+  tap_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_motor
+  hold_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_motor
+  style:
+    left: 44.4824%
+    top: 78.6776%
+    width: 11.3294%
+    height: 4.9928%
+    z-index: 24
+    cursor: pointer
+- type: image
+  image: /local/toque/touch-target.svg
+  filter: none
+  title: Heater status pill
+  tap_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_heater
+  hold_action:
+    action: more-info
+    entity: binary_sensor.monsieur_cuisine_connect_heater
+  style:
+    left: 56.8417%
+    top: 78.6776%
+    width: 11.3294%
+    height: 4.9928%
+    z-index: 24
+    cursor: pointer

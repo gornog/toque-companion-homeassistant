@@ -1,0 +1,13 @@
+{
+  "AGENTS.md": "262dc2243a91c8fcb1310f1f2bb7df8669f5b452a568c6378d78dae480a94134",
+  "preview/live-preview.png": "e5eabf62e179d368db0f2fdbf67fe63ee38ec18280f739b89ed332739c6eafe8",
+  "preview/toque-screen-idle.svg": "52a648a94148a562bbbcdc69abc62bc55e00eb99dc11b1b211e761db93e4f69c",
+  "preview/toque-screen-running.svg": "b40b81a913a050264d7b430b077e78cbc34c788580a35ac8b685a74954a11c69",
+  "README.md": "65ad6a0be63936c66d537191651d105a1fa44762a87846fd73332e0408baf09d",
+  "tools/generate_card.py": "cbb04ca8e90d5e6737c17339be29335a69aa108ce39e52d13942b4615e5864d9",
+  "tools/validate_card.py": "d0e1bbfe883511ce574182c4feb67fc3395ff6b0c6c4c4949270ea3fb8457650",
+  "toque-card-fr.yaml": "f055ff5711206face5fe3cdf72a756c681d02e7489c67d4e09d909d41c902e85",
+  "toque-card.yaml": "e44afc87ba02ad6ed58d913a08d0fe32b0571447c63c7c43ad4c403ebe324e6f",
+  "www/toque/monsieur-cuisine-connect-frame.svg": "3f6cc94c72dca300ce43925896a993887d199653cbbc6fdca8a0c65dc5834ecc",
+  "www/toque/touch-target.svg": "3c33179c7242a621adfbda0106121af68baa6589374934ed612f1a2cbb775fec"
+}
