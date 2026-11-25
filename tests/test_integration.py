@@ -68,7 +68,7 @@ async def test_entities_buttons_events_and_diagnostics(
         assert hass.states.get("binary_sensor.monsieur_cuisine_connect_fault").state == STATE_OFF
 
         # Buttons strictly follow state.can
-        assert hass.states.get("button.monsieur_cuisine_connect_tare").state != STATE_UNAVAILABLE
+        assert hass.states.get("button.monsieur_cuisine_connect_tare_scale").state != STATE_UNAVAILABLE
         assert hass.states.get("button.monsieur_cuisine_connect_pause").state == STATE_UNAVAILABLE
         assert hass.states.get("button.monsieur_cuisine_connect_stop").state == STATE_UNAVAILABLE
 
@@ -76,7 +76,7 @@ async def test_entities_buttons_events_and_diagnostics(
         await hass.services.async_call(
             "button",
             "press",
-            {"entity_id": "button.monsieur_cuisine_connect_tare"},
+            {"entity_id": "button.monsieur_cuisine_connect_tare_scale"},
             blocking=True,
         )
         await _wait_for(lambda: hass.states.get("sensor.monsieur_cuisine_connect_weight").state == "0")

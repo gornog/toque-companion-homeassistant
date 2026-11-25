@@ -46,3 +46,9 @@ if _HAS_HA:
         import pytest_socket
 
         pytest_socket.disable_socket = lambda *args, **kwargs: None
+else:
+
+    @pytest.fixture
+    def socket_enabled():
+        """No-op fallback when pytest-homeassistant-custom-component is not installed."""
+        return

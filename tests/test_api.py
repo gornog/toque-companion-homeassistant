@@ -20,7 +20,7 @@ from tests.fake_companion import FakeCompanionServer
 
 
 @pytest.fixture
-async def server():
+async def server(socket_enabled):
     srv = FakeCompanionServer()
     await srv.start()
     try:

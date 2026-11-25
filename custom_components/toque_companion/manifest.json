@@ -1,6 +1,7 @@
 {
   "domain": "toque_companion",
   "name": "Toque Companion",
+  "categories": ["appliances_cleaning.cooking"],
   "codeowners": ["@gornog"],
   "config_flow": true,
   "documentation": "https://github.com/gornog/toque-companion-homeassistant",
