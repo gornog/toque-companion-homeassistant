@@ -1,0 +1,179 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Appairer Toque Compagnon",
+        "description": "Sur le robot, ouvrez Réglages › Téléphone › Appairer un téléphone (Toque 0.10.0+). Saisissez l’adresse IP locale du robot et le code à 6 chiffres, ou collez le texte du QR code (`toque://pair?...`).",
+        "data": {
+          "host": "Adresse IP du robot",
+          "port": "Port",
+          "pairing_code": "Code d’appairage à 6 chiffres",
+          "qr_text": "Texte du QR code (facultatif)"
+        },
+        "data_description": {
+          "host": "Adresse IPv4 locale du robot (pas de nom DNS).",
+          "port": "Le port par défaut de Toque Compagnon est 8088.",
+          "pairing_code": "Code temporaire à 6 chiffres affiché sur le robot (valable 2 minutes).",
+          "qr_text": "Alternative à IP + code : chaîne complète toque://pair?... issue du QR code."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Réappairer Toque Compagnon",
+        "description": "Le robot ({host}) a refusé le jeton enregistré. Ouvrez Réglages › Téléphone › Appairer un téléphone sur le robot et saisissez un nouveau code à 6 chiffres ou le texte du QR code.",
+        "data": {
+          "host": "Adresse IP du robot",
+          "port": "Port",
+          "pairing_code": "Code d’appairage à 6 chiffres",
+          "qr_text": "Texte du QR code (facultatif)"
+        }
+      },
+      "reconfigure": {
+        "title": "Mettre à jour l’adresse du robot",
+        "description": "Modifiez l’adresse IP locale ou le port du robot. Home Assistant vérifiera la preuve cryptographique du robot avant d’envoyer son jeton.",
+        "data": {
+          "host": "Adresse IP du robot",
+          "port": "Port"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Impossible de joindre le robot. Vérifiez l’adresse IP, le port et que l’écran d’appairage est ouvert sur le robot.",
+      "code_dead": "Trop d’essais incorrects : demandez un nouveau code sur le robot.",
+      "code_expired": "Code expiré : demandez un nouveau code sur le robot.",
+      "code_or_qr_required": "Saisissez soit un code à 6 chiffres, soit un texte de QR code (pas les deux).",
+      "different_robot": "Le robot appairé ne correspond pas à l’appareil déjà configuré.",
+      "invalid_code_format": "Le code d’appairage doit contenir exactement 6 chiffres.",
+      "invalid_host": "L’hôte doit être une adresse IP valide (ou localhost). Toque refuse les noms de domaine.",
+      "invalid_qr": "Texte de QR code Toque invalide (format attendu : toque://pair?... ).",
+      "pairing_closed": "L’appairage n’est pas ouvert sur le robot. Ouvrez Réglages › Téléphone › Appairer un téléphone.",
+      "proof_failed": "La preuve d’identité du robot a échoué. Le jeton n’a pas été envoyé. Vérifiez l’adresse IP ou réappairez si ce client a été retiré sur le robot.",
+      "too_many_phones": "Nombre maximal de clients appairés (8) atteint sur le robot. Retirez d’abord un ancien client sur le robot.",
+      "unsupported_protocol": "Cet appareil ne correspond pas à un serveur Toque Compagnon v1 pris en charge.",
+      "wrong_code": "Code d’appairage incorrect."
+    },
+    "abort": {
+      "already_configured": "Ce robot Toque est déjà configuré.",
+      "reauth_successful": "Toque Compagnon réappairé avec succès.",
+      "reconfigure_successful": "Adresse du robot mise à jour."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "status": {
+        "name": "État",
+        "state": {
+          "idle": "Au repos",
+          "starting": "Démarrage",
+          "running": "En cours",
+          "paused": "En pause",
+          "stopping": "Arrêt en cours",
+          "finished": "Terminé",
+          "aborted": "Interrompu",
+          "fault": "Défaut"
+        }
+      },
+      "temperature": {
+        "name": "Température du bol"
+      },
+      "target_temperature": {
+        "name": "Température demandée"
+      },
+      "weight": {
+        "name": "Poids"
+      },
+      "speed_level": {
+        "name": "Vitesse"
+      },
+      "remaining_time": {
+        "name": "Temps restant"
+      },
+      "estimated_end": {
+        "name": "Fin estimée"
+      },
+      "job_label": {
+        "name": "Programme"
+      },
+      "recipe": {
+        "name": "Recette en cours"
+      },
+      "step_number": {
+        "name": "Étape"
+      },
+      "current_step": {
+        "name": "Étape en cours"
+      },
+      "waiting_recipe": {
+        "name": "Recette en attente"
+      },
+      "last_activity": {
+        "name": "Dernière activité"
+      },
+      "link_state": {
+        "name": "Liaison base",
+        "state": {
+          "offline": "Hors ligne",
+          "arming": "Initialisation",
+          "ready": "Prête",
+          "lost": "Perdue"
+        }
+      },
+      "fault_message": {
+        "name": "Message d’erreur"
+      }
+    },
+    "binary_sensor": {
+      "lid_open": {
+        "name": "Couvercle ouvert"
+      },
+      "bowl_present": {
+        "name": "Bol présent"
+      },
+      "motor": {
+        "name": "Moteur"
+      },
+      "heater": {
+        "name": "Chauffe"
+      },
+      "hot": {
+        "name": "Contenu chaud"
+      },
+      "scale_stable": {
+        "name": "Poids stable"
+      },
+      "fault": {
+        "name": "Défaut"
+      },
+      "turbo": {
+        "name": "Turbo"
+      }
+    },
+    "button": {
+      "pause": {
+        "name": "Pause"
+      },
+      "stop": {
+        "name": "Arrêter"
+      },
+      "tare": {
+        "name": "Tare"
+      }
+    },
+    "event": {
+      "cooking": {
+        "name": "Cuisine",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "waiting": "Action requise",
+              "step_end": "Étape terminée",
+              "job_end": "Programme terminé",
+              "pause": "En pause",
+              "fault": "Défaut",
+              "temp_reached": "Température atteinte"
+            }
+          }
+        }
+      }
+    }
+  }
+}

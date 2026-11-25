@@ -1,0 +1,11 @@
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+markers = [
+    "simulator: end-to-end tests requiring the official Toque v0.10.0 PC simulator",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100

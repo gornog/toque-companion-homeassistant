@@ -1,0 +1,179 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Pair Toque Companion",
+        "description": "On the robot, open Settings › Phone › Pair a phone (Toque 0.10.0+). Enter either the robot's local IP address + 6-digit code, or paste the QR pairing text (`toque://pair?...`).",
+        "data": {
+          "host": "Robot IP address",
+          "port": "Port",
+          "pairing_code": "6-digit pairing code",
+          "qr_text": "QR pairing text (optional)"
+        },
+        "data_description": {
+          "host": "Local IPv4 address of the robot (not a DNS hostname).",
+          "port": "Default Companion port is 8088.",
+          "pairing_code": "Temporary 6-digit code shown on the robot (valid for 2 minutes).",
+          "qr_text": "Alternative to IP + code: full toque://pair?... string from the robot QR code."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-pair Toque Companion",
+        "description": "The robot ({host}) rejected the stored pairing token. Open Settings › Phone › Pair a phone on the robot and enter a new 6-digit code or QR text.",
+        "data": {
+          "host": "Robot IP address",
+          "port": "Port",
+          "pairing_code": "6-digit pairing code",
+          "qr_text": "QR pairing text (optional)"
+        }
+      },
+      "reconfigure": {
+        "title": "Update robot address",
+        "description": "Update the robot's local IP address or port. Home Assistant will verify the robot's cryptographic proof before sending its token.",
+        "data": {
+          "host": "Robot IP address",
+          "port": "Port"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot reach the robot. Check the IP address, port, and that the pairing screen is open (or another client is already paired).",
+      "code_dead": "Too many wrong attempts: request a new pairing code on the robot.",
+      "code_expired": "Pairing code expired: request a new code on the robot.",
+      "code_or_qr_required": "Enter either a 6-digit pairing code OR a QR pairing text (not both).",
+      "different_robot": "The paired robot does not match the existing device ID.",
+      "invalid_code_format": "Pairing code must be exactly 6 digits.",
+      "invalid_host": "Host must be a valid IP address (or localhost). DNS hostnames are rejected by Toque.",
+      "invalid_qr": "Invalid Toque QR pairing string (expected toque://pair?... ).",
+      "pairing_closed": "Pairing is not open on the robot. Open Settings › Phone › Pair a phone first.",
+      "proof_failed": "Robot identity proof failed. The bearer token was not sent. Check the IP address or re-pair if this client was removed on the robot.",
+      "too_many_phones": "Maximum paired clients (8) reached on the robot. Remove an old client on the robot first.",
+      "unsupported_protocol": "This endpoint is not a supported Toque Companion v1 server.",
+      "wrong_code": "Incorrect pairing code."
+    },
+    "abort": {
+      "already_configured": "This Toque robot is already configured.",
+      "reauth_successful": "Toque Companion re-paired successfully.",
+      "reconfigure_successful": "Robot address updated successfully."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "status": {
+        "name": "Status",
+        "state": {
+          "idle": "Idle",
+          "starting": "Starting",
+          "running": "Running",
+          "paused": "Paused",
+          "stopping": "Stopping",
+          "finished": "Finished",
+          "aborted": "Aborted",
+          "fault": "Fault"
+        }
+      },
+      "temperature": {
+        "name": "Temperature"
+      },
+      "target_temperature": {
+        "name": "Target temperature"
+      },
+      "weight": {
+        "name": "Weight"
+      },
+      "speed_level": {
+        "name": "Speed level"
+      },
+      "remaining_time": {
+        "name": "Time remaining"
+      },
+      "estimated_end": {
+        "name": "Estimated end"
+      },
+      "job_label": {
+        "name": "Program"
+      },
+      "recipe": {
+        "name": "Current recipe"
+      },
+      "step_number": {
+        "name": "Step"
+      },
+      "current_step": {
+        "name": "Current step"
+      },
+      "waiting_recipe": {
+        "name": "Waiting recipe"
+      },
+      "last_activity": {
+        "name": "Last activity"
+      },
+      "link_state": {
+        "name": "Base link",
+        "state": {
+          "offline": "Offline",
+          "arming": "Arming",
+          "ready": "Ready",
+          "lost": "Lost"
+        }
+      },
+      "fault_message": {
+        "name": "Fault message"
+      }
+    },
+    "binary_sensor": {
+      "lid_open": {
+        "name": "Lid open"
+      },
+      "bowl_present": {
+        "name": "Bowl present"
+      },
+      "motor": {
+        "name": "Motor"
+      },
+      "heater": {
+        "name": "Heater"
+      },
+      "hot": {
+        "name": "Hot contents"
+      },
+      "scale_stable": {
+        "name": "Scale stable"
+      },
+      "fault": {
+        "name": "Fault"
+      },
+      "turbo": {
+        "name": "Turbo"
+      }
+    },
+    "button": {
+      "pause": {
+        "name": "Pause"
+      },
+      "stop": {
+        "name": "Stop"
+      },
+      "tare": {
+        "name": "Tare scale"
+      }
+    },
+    "event": {
+      "cooking": {
+        "name": "Cooking",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "waiting": "Action required",
+              "step_end": "Step finished",
+              "job_end": "Program ended",
+              "pause": "Paused",
+              "fault": "Fault",
+              "temp_reached": "Temperature reached"
+            }
+          }
+        }
+      }
+    }
+  }
+}
