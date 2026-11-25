@@ -35,13 +35,19 @@ Starting with **Home Assistant 2026.11**, HACS is integrated into Home Assistant
 ### Option 1 — Home Assistant Marketplace (HA 2026.11+)
 
 1. Open Home Assistant and go to **Settings › Marketplace** (`/marketplace`).
-2. Open the overflow menu (**⋮**) in the top-right corner and select **Custom repositories** (or **Add custom repository**).
-3. Enter the repository URL:
+2. Click **Add from link** in the top bar (or **⋮ › Custom repositories › Add from link**).
+3. Paste the repository URL into **GitHub link** and click **Add**:
    ```text
    https://github.com/gornog/toque-companion-homeassistant
    ```
-4. Select category **Integration** and click **Add**.
-5. Find **Toque Companion** in Marketplace, click **Install** / **Download**, and **restart Home Assistant**.
+   Marketplace automatically detects the repository type as **Integration**.
+
+   ![Add from a GitHub link in Home Assistant Marketplace](docs/images/marketplace-add-link.png)
+
+4. Open **Toque Companion**, click **Install**, and confirm **Install**.
+   On Home Assistant 2026.11+, the integration installs live (no restart required) and shows a **Set up** button.
+
+   ![Toque Companion installed in Home Assistant Marketplace](docs/images/marketplace-installed.png)
 
 ### Option 2 — Classic HACS (HA 2026.3 – 2026.10)
 
@@ -61,11 +67,14 @@ Copy `custom_components/toque_companion` into your Home Assistant `config/custom
 
 1. On the robot, open **Réglages › Téléphone › Appairer un téléphone** (*Settings › Phone › Pair a phone*).
    - The robot opens a temporary **6-digit code** (and QR code) valid for **2 minutes** (locked after 5 wrong attempts; up to 8 paired clients).
-2. In Home Assistant, go to **Settings › Devices & services › Add integration › Toque Companion**.
+2. In Home Assistant, click **Set up** from Marketplace (or go to **Settings › Devices & services › Add integration › Toque Companion**).
 3. Enter either:
    - The robot's **local IPv4 address**, port (`8088`), and **6-digit pairing code**, **or**
    - The full **QR pairing text** (`toque://pair?v=1&h=...&p=8088&s=...&r=...`).
-4. Home Assistant pairs as its own dedicated client, verifies the robot's HMAC-SHA256 identity proof (`POST /api/prove`), and creates the device.
+
+   ![Pair Toque Companion configuration dialog](docs/images/config-pair-dialog.png)
+
+4. Click **Submit**. Home Assistant pairs as its own dedicated client, verifies the robot's HMAC-SHA256 identity proof (`POST /api/prove`), and creates the device.
 
 ### Re-pairing & IP changes
 
