@@ -32,7 +32,7 @@ def test_manifest_hassfest_ordering_and_fields() -> None:
     assert keys[:2] == ["domain", "name"]
     assert keys[2:] == sorted(keys[2:]), "manifest.json keys after domain/name must be sorted"
     assert manifest["domain"] == "toque_companion"
-    assert manifest["version"] == "0.2.0"
+    assert manifest["version"] == "0.2.1"
     assert manifest["zeroconf"] == ["_toque._tcp.local."]
     assert manifest["config_flow"] is True
     assert manifest["iot_class"] == "local_push"
