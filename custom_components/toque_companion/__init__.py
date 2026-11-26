@@ -98,7 +98,9 @@ async def async_unload_entry(
     hass: HomeAssistant, entry: ToqueCompanionConfigEntry
 ) -> bool:
     """Unload a config entry and cancel the long-poll task cleanly."""
-    coordinator = entry.runtime_data
+    coordinator = getattr(entry, "runtime_data", None)
+    if coordinator is None:
+        return True
     await coordinator.async_stop()
     platforms = SENSOR_ONLY_PLATFORMS if coordinator.sensor_only else FULL_PLATFORMS
     return await hass.config_entries.async_unload_platforms(entry, platforms)

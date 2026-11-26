@@ -30,6 +30,10 @@ async def _noop_setup(*_args, **_kwargs) -> bool:
     return True
 
 
+async def _noop_unload(*_args, **_kwargs) -> bool:
+    return True
+
+
 def _zeroconf_info(
     host: str,
     port: int,
@@ -143,6 +147,7 @@ async def test_reauth_and_reconfigure_flows(
     hass: HomeAssistant, fake_robot: FakeCompanionServer, monkeypatch
 ) -> None:
     monkeypatch.setattr("custom_components.toque_companion.async_setup_entry", _noop_setup)
+    monkeypatch.setattr("custom_components.toque_companion.async_unload_entry", _noop_unload)
     old_token, old_pid = fake_robot.add_paired_client()
     entry = MockConfigEntry(
         domain=DOMAIN,
