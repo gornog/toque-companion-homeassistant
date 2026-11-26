@@ -1,5 +1,6 @@
 {
   "config": {
+    "flow_title": "{name}",
     "step": {
       "user": {
         "title": "Appairer Toque Compagnon",
@@ -8,13 +9,27 @@
           "host": "Adresse IP du robot",
           "port": "Port",
           "pairing_code": "Code d’appairage à 6 chiffres",
-          "qr_text": "Texte du QR code (facultatif)"
+          "qr_text": "Texte du QR code (facultatif)",
+          "sensor_only": "Capteurs uniquement (désactiver les commandes)"
         },
         "data_description": {
           "host": "Adresse IPv4 locale du robot (pas de nom DNS).",
           "port": "Le port par défaut de Toque Compagnon est 8088.",
           "pairing_code": "Code temporaire à 6 chiffres affiché sur le robot (valable 2 minutes).",
-          "qr_text": "Alternative à IP + code : chaîne complète toque://pair?... issue du QR code."
+          "qr_text": "Alternative à IP + code : chaîne complète toque://pair?... issue du QR code.",
+          "sensor_only": "Capteurs uniquement : n’expose et n’autorise aucune commande active (Pause, Arrêter, Tare). Modifiable à tout moment via Reconfigurer."
+        }
+      },
+      "zeroconf_confirm": {
+        "title": "Robot Toque découvert",
+        "description": "« {name} » détecté à l’adresse {host}:{port}. Sur le robot, ouvrez Réglages › Téléphone › Appairer un téléphone et saisissez le code à 6 chiffres.",
+        "data": {
+          "pairing_code": "Code d’appairage à 6 chiffres",
+          "sensor_only": "Capteurs uniquement (désactiver les commandes)"
+        },
+        "data_description": {
+          "pairing_code": "Code temporaire à 6 chiffres affiché sur le robot (valable 2 minutes).",
+          "sensor_only": "Capteurs uniquement : n’expose et n’autorise aucune commande active (Pause, Arrêter, Tare). Modifiable à tout moment via Reconfigurer."
         }
       },
       "reauth_confirm": {
@@ -24,15 +39,23 @@
           "host": "Adresse IP du robot",
           "port": "Port",
           "pairing_code": "Code d’appairage à 6 chiffres",
-          "qr_text": "Texte du QR code (facultatif)"
+          "qr_text": "Texte du QR code (facultatif)",
+          "sensor_only": "Capteurs uniquement (désactiver les commandes)"
+        },
+        "data_description": {
+          "sensor_only": "Capteurs uniquement : n’expose et n’autorise aucune commande active (Pause, Arrêter, Tare). Modifiable à tout moment via Reconfigurer."
         }
       },
       "reconfigure": {
-        "title": "Mettre à jour l’adresse du robot",
-        "description": "Modifiez l’adresse IP locale ou le port du robot. Home Assistant vérifiera la preuve cryptographique du robot avant d’envoyer son jeton.",
+        "title": "Reconfigurer Toque Compagnon",
+        "description": "Modifiez l’adresse IP locale ou le port du robot (vérifiés par preuve cryptographique avant d’envoyer le jeton), et activez ou non le mode capteurs uniquement.",
         "data": {
           "host": "Adresse IP du robot",
-          "port": "Port"
+          "port": "Port",
+          "sensor_only": "Capteurs uniquement (désactiver les commandes)"
+        },
+        "data_description": {
+          "sensor_only": "Capteurs uniquement : n’expose et n’autorise aucune commande active (Pause, Arrêter, Tare)."
         }
       }
     },
@@ -53,8 +76,10 @@
     },
     "abort": {
       "already_configured": "Ce robot Toque est déjà configuré.",
+      "cannot_connect": "Impossible de joindre le robot découvert.",
+      "unsupported_protocol": "L’appareil découvert n’est pas un serveur Toque Compagnon v1 pris en charge.",
       "reauth_successful": "Toque Compagnon réappairé avec succès.",
-      "reconfigure_successful": "Adresse du robot mise à jour."
+      "reconfigure_successful": "Configuration de Toque Compagnon mise à jour."
     }
   },
   "entity": {

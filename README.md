@@ -12,17 +12,17 @@ Custom Home Assistant integration for **stock official [Toque](https://github.co
 
 Official Toque **0.10.0** introduced **Toque Compagnon** directly in the stock robot app (`Réglages › Téléphone › Appairer un téléphone`). This integration talks directly to that official API:
 
-- **No custom firmware fork or MQTT broker required** — runs against stock official Toque `0.10.0+`.
+- **No custom firmware fork or MQTT broker required** — runs against stock official Toque `0.10.0+` (and supports automatic Wi-Fi discovery via `_toque._tcp` added in `0.11.0`).
 - **Real-time local push** via a single bounded long-poll loop (`GET /api/state?since=<rev>&wait=20&replace=1`) + journal alerts (`GET /api/journal`).
 - **Cryptographic robot identity proof (`POST /api/prove`)** verified in constant time (HMAC-SHA256) before sending the bearer token initially, after network errors, or when updating the robot IP. If proof fails, the token is never transmitted.
-- **Safety-scoped controls**: exposes **Pause**, **Stop**, and **Tare** buttons whose availability strictly tracks the robot's authoritative `state.can.*` flags. Remote **start**, **resume**, **adjust**, **Turbo**, hot-blend confirmation, and recipe writes are intentionally omitted.
+- **Safety-scoped controls + optional Sensor-only mode**: exposes **Pause**, **Stop**, and **Tare** buttons whose availability strictly tracks the robot's authoritative `state.can.*` flags (remote **start**, **resume**, **adjust**, **Turbo**, hot-blend confirmation, and recipe writes are intentionally omitted). Enable **Sensor only** during setup or anytime via **Reconfigure** to hide and block all control buttons in Home Assistant.
 - **Full French and English UI** (`fr` / `en`) and **redacted diagnostics**.
 
 ---
 
 ## Prerequisites
 
-- A Monsieur Cuisine running **official Toque v0.10.0 or newer** (`protocol: 1` verified against tag `v0.10.0`, commit `b2bfe1ceac95bac890912237bbe58ade68a3bfeb`).
+- A Monsieur Cuisine running **official Toque v0.10.0 or newer** (`protocol: 1` verified on `v0.10.0` and `v0.11.0`; automatic mDNS `_toque._tcp` discovery requires **v0.11.0+**).
 - Home Assistant **2026.3.0+** (tested against Home Assistant OS `2026.11.2`).
 - Robot and Home Assistant on the **same local network**.
 
@@ -67,19 +67,21 @@ Copy `custom_components/toque_companion` into your Home Assistant `config/custom
 
 1. On the robot, open **Réglages › Téléphone › Appairer un téléphone** (*Settings › Phone › Pair a phone*).
    - The robot opens a temporary **6-digit code** (and QR code) valid for **2 minutes** (locked after 5 wrong attempts; up to 8 paired clients).
-2. In Home Assistant, click **Set up** from Marketplace (or go to **Settings › Devices & services › Add integration › Toque Companion**).
-3. Enter either:
+   - **Automatic discovery (Toque v0.11.0+)**: While pairing is open or a client is paired, Toque announces `_toque._tcp` on your Wi-Fi network. Home Assistant detects the robot automatically under **Settings › Devices & services**—just click **Configure** and enter the 6-digit code.
+2. Or configure manually: click **Set up** from Marketplace (or **Settings › Devices & services › Add integration › Toque Companion**) and enter either:
    - The robot's **local IPv4 address**, port (`8088`), and **6-digit pairing code**, **or**
    - The full **QR pairing text** (`toque://pair?v=1&h=...&p=8088&s=...&r=...`).
+   - Optional: tick **Sensor only (disable controls)** if you want monitoring only without exposing or allowing Pause, Stop, or Tare buttons in Home Assistant.
 
    ![Pair Toque Companion configuration dialog](docs/images/config-pair-dialog.png)
 
-4. Click **Submit**. Home Assistant pairs as its own dedicated client, verifies the robot's HMAC-SHA256 identity proof (`POST /api/prove`), and creates the device.
+3. Click **Submit**. Home Assistant pairs as its own dedicated client, verifies the robot's HMAC-SHA256 identity proof (`POST /api/prove`), and creates the device.
 
-### Re-pairing & IP changes
+### Re-pairing, Sensor-only toggle & IP changes
 
+- **Toggle Sensor-only mode**: Open the integration's **⋮ › Reconfigure** menu anytime to tick or untick **Sensor only (disable controls)** without re-pairing. (Note: this disables controls on the Home Assistant side; robot-side read-only token restriction requires upstream Toque support.)
 - **Removed on the robot (`401`)**: Home Assistant automatically starts a **Reauthentication** flow to pair with a fresh 6-digit code.
-- **Robot IP changed (DHCP)**: Use **Reconfigure** on the integration entry to update the IP address. Home Assistant runs `POST /api/prove` before sending the stored token.
+- **Robot IP changed (DHCP)**: On Toque `0.11.0+`, `_toque._tcp` mDNS updates the IP automatically after verifying `POST /api/prove`; you can also update it manually via **Reconfigure** (also proof-checked before sending the token).
 - **Deleting the integration**: Performs a best-effort `DELETE /api/phones/me` to free the slot on the robot.
 
 ---

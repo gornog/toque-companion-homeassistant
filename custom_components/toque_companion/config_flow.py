@@ -1,4 +1,4 @@
-"""Config flow for Toque Companion (6-digit code or QR pairing, reauth, reconfigure)."""
+"""Config flow for Toque Companion (manual/QR pairing, Zeroconf _toque._tcp, reauth, reconfigure)."""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ import voluptuous as vol
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_HOST, CONF_PORT
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.service_info.zeroconf import ZeroconfServiceInfo
 
 from .api import (
     CompanionApiError,
@@ -26,9 +27,11 @@ from .const import (
     CONF_PHONE_ID,
     CONF_QR_TEXT,
     CONF_ROBOT_ID,
+    CONF_SENSOR_ONLY,
     CONF_TOKEN,
     DEFAULT_PORT,
     DOMAIN,
+    SUPPORTED_PROTOCOL,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -43,9 +46,15 @@ _PAIR_ERROR_MAP: dict[str, str] = {
 
 
 class ToqueCompanionConfigFlow(ConfigFlow, domain=DOMAIN):
-    """Handle configuration, reauthentication, and reconfiguration for Toque Companion."""
+    """Handle configuration, Zeroconf discovery, reauthentication, and reconfiguration."""
 
     VERSION = 1
+
+    def __init__(self) -> None:
+        self._discovered_host: str | None = None
+        self._discovered_port: int = DEFAULT_PORT
+        self._discovered_robot_id: str | None = None
+        self._discovered_name: str = "Monsieur Cuisine"
 
     async def _pair_and_verify(
         self,
@@ -54,9 +63,10 @@ class ToqueCompanionConfigFlow(ConfigFlow, domain=DOMAIN):
         port: int,
         code: str,
         qr_text: str,
+        sensor_only: bool,
+        expected_robot_id: str | None = None,
     ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Pair with the robot using either a 6-digit code or a QR string and verify proof."""
-        expected_robot_id: str | None = None
         secret: str | None = None
 
         if qr_text:
@@ -98,8 +108,13 @@ class ToqueCompanionConfigFlow(ConfigFlow, domain=DOMAIN):
                 )
             else:
                 pair_reply = await client.pair_with_code(code)
+                actual_id = (pair_reply.get("robot") or {}).get("id")
+                if expected_robot_id is not None and actual_id != expected_robot_id:
+                    raise _FlowError("different_robot")
             # Immediately verify HMAC proof and fetch initial state before persisting entry
             await client.get_state()
+        except _FlowError:
+            raise
         except CompanionProofError as err:
             raise _FlowError("proof_failed") from err
         except CompanionApiError as err:
@@ -116,6 +131,7 @@ class ToqueCompanionConfigFlow(ConfigFlow, domain=DOMAIN):
             CONF_TOKEN: pair_reply["token"],
             CONF_PHONE_ID: phone["id"],
             CONF_ROBOT_ID: robot["id"],
+            CONF_SENSOR_ONLY: bool(sensor_only),
         }
         return entry_data, robot
 
@@ -130,13 +146,18 @@ class ToqueCompanionConfigFlow(ConfigFlow, domain=DOMAIN):
             port = int(user_input.get(CONF_PORT) or DEFAULT_PORT)
             code = (user_input.get(CONF_PAIRING_CODE) or "").strip()
             qr_text = (user_input.get(CONF_QR_TEXT) or "").strip()
+            sensor_only = bool(user_input.get(CONF_SENSOR_ONLY, False))
 
             if bool(code) == bool(qr_text):
                 errors["base"] = "code_or_qr_required"
             else:
                 try:
                     entry_data, robot = await self._pair_and_verify(
-                        host=host, port=port, code=code, qr_text=qr_text
+                        host=host,
+                        port=port,
+                        code=code,
+                        qr_text=qr_text,
+                        sensor_only=sensor_only,
                     )
                 except _FlowError as err:
                     errors["base"] = err.reason
@@ -157,8 +178,127 @@ class ToqueCompanionConfigFlow(ConfigFlow, domain=DOMAIN):
                     ): vol.All(vol.Coerce(int), vol.Range(min=1, max=65535)),
                     vol.Optional(CONF_PAIRING_CODE, default=""): str,
                     vol.Optional(CONF_QR_TEXT, default=""): str,
+                    vol.Optional(
+                        CONF_SENSOR_ONLY,
+                        default=bool(defaults.get(CONF_SENSOR_ONLY, False)),
+                    ): bool,
                 }
             ),
+            errors=errors,
+        )
+
+    # ------------------------------------------------------------------ zeroconf (Toque 0.11.0+ _toque._tcp)
+
+    async def async_step_zeroconf(
+        self, discovery_info: ZeroconfServiceInfo
+    ) -> ConfigFlowResult:
+        """Handle mDNS discovery of Toque Companion (_toque._tcp.local., Toque 0.11.0+)."""
+        try:
+            host = normalize_host(discovery_info.host)
+        except ValueError:
+            return self.async_abort(reason="cannot_connect")
+
+        port = int(discovery_info.port or DEFAULT_PORT)
+        props = discovery_info.properties or {}
+
+        raw_proto = props.get("v")
+        if raw_proto is not None:
+            try:
+                if int(str(raw_proto)) < SUPPORTED_PROTOCOL:
+                    return self.async_abort(reason="unsupported_protocol")
+            except ValueError:
+                return self.async_abort(reason="unsupported_protocol")
+
+        # Confirm the discovered _toque._tcp service is actually official Toque Companion
+        # (ignores non-Companion forks that may also advertise _toque._tcp).
+        probe = ToqueCompanionClient(async_get_clientsession(self.hass), host, port)
+        try:
+            await probe.hello()
+        except CompanionUnsupportedProtocolError:
+            return self.async_abort(reason="unsupported_protocol")
+        except CompanionError:
+            return self.async_abort(reason="cannot_connect")
+
+        robot_id = str(props.get("id") or "").strip() or None
+        if robot_id:
+            existing = await self.async_set_unique_id(robot_id)
+            if existing is not None:
+                if (
+                    existing.data.get(CONF_HOST) != host
+                    or existing.data.get(CONF_PORT) != port
+                ):
+                    # Per COMPANION.md §2.5 bis & §2.6: confirm identity with /api/prove
+                    # before updating an existing entry's IP/port.
+                    verifier = ToqueCompanionClient(
+                        async_get_clientsession(self.hass),
+                        host,
+                        port,
+                        token=existing.data.get(CONF_TOKEN),
+                        phone_id=existing.data.get(CONF_PHONE_ID),
+                        robot_id=existing.data.get(CONF_ROBOT_ID),
+                    )
+                    try:
+                        proven = await verifier.verify_robot()
+                    except CompanionError:
+                        proven = False
+                    if proven:
+                        self._abort_if_unique_id_configured(
+                            updates={CONF_HOST: host, CONF_PORT: port}
+                        )
+                return self.async_abort(reason="already_configured")
+
+        raw_name = (discovery_info.name or "").removesuffix("._toque._tcp.local.").strip()
+        name = raw_name or "Monsieur Cuisine"
+        self._discovered_host = host
+        self._discovered_port = port
+        self._discovered_robot_id = robot_id
+        self._discovered_name = name
+        self.context["title_placeholders"] = {"name": name}
+        return await self.async_step_zeroconf_confirm()
+
+    async def async_step_zeroconf_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Complete pairing for a Zeroconf-discovered Toque robot."""
+        assert self._discovered_host is not None
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            code = (user_input.get(CONF_PAIRING_CODE) or "").strip()
+            sensor_only = bool(user_input.get(CONF_SENSOR_ONLY, False))
+            try:
+                entry_data, robot = await self._pair_and_verify(
+                    host=self._discovered_host,
+                    port=self._discovered_port,
+                    code=code,
+                    qr_text="",
+                    sensor_only=sensor_only,
+                    expected_robot_id=self._discovered_robot_id,
+                )
+            except _FlowError as err:
+                errors["base"] = err.reason
+            else:
+                await self.async_set_unique_id(entry_data[CONF_ROBOT_ID])
+                self._abort_if_unique_id_configured(updates=entry_data)
+                title = robot.get("name") or self._discovered_name
+                return self.async_create_entry(title=title, data=entry_data)
+
+        defaults = user_input or {}
+        return self.async_show_form(
+            step_id="zeroconf_confirm",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(CONF_PAIRING_CODE): str,
+                    vol.Optional(
+                        CONF_SENSOR_ONLY,
+                        default=bool(defaults.get(CONF_SENSOR_ONLY, False)),
+                    ): bool,
+                }
+            ),
+            description_placeholders={
+                "name": self._discovered_name,
+                "host": self._discovered_host,
+                "port": str(self._discovered_port),
+            },
             errors=errors,
         )
 
@@ -179,13 +319,22 @@ class ToqueCompanionConfigFlow(ConfigFlow, domain=DOMAIN):
             port = int(user_input.get(CONF_PORT) or reauth_entry.data[CONF_PORT])
             code = (user_input.get(CONF_PAIRING_CODE) or "").strip()
             qr_text = (user_input.get(CONF_QR_TEXT) or "").strip()
+            sensor_only = bool(
+                user_input.get(
+                    CONF_SENSOR_ONLY, reauth_entry.data.get(CONF_SENSOR_ONLY, False)
+                )
+            )
 
             if bool(code) == bool(qr_text):
                 errors["base"] = "code_or_qr_required"
             else:
                 try:
                     new_data, _robot = await self._pair_and_verify(
-                        host=host, port=port, code=code, qr_text=qr_text
+                        host=host,
+                        port=port,
+                        code=code,
+                        qr_text=qr_text,
+                        sensor_only=sensor_only,
                     )
                 except _FlowError as err:
                     errors["base"] = err.reason
@@ -210,6 +359,10 @@ class ToqueCompanionConfigFlow(ConfigFlow, domain=DOMAIN):
                     ): vol.All(vol.Coerce(int), vol.Range(min=1, max=65535)),
                     vol.Optional(CONF_PAIRING_CODE, default=""): str,
                     vol.Optional(CONF_QR_TEXT, default=""): str,
+                    vol.Optional(
+                        CONF_SENSOR_ONLY,
+                        default=bool(reauth_entry.data.get(CONF_SENSOR_ONLY, False)),
+                    ): bool,
                 }
             ),
             description_placeholders={"host": reauth_entry.data[CONF_HOST]},
@@ -221,46 +374,68 @@ class ToqueCompanionConfigFlow(ConfigFlow, domain=DOMAIN):
     async def async_step_reconfigure(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
-        """Update host/port if the robot IP changed, verifying proof before accepting."""
+        """Update robot host/port and/or toggle sensor-only mode."""
         entry = self._get_reconfigure_entry()
         errors: dict[str, str] = {}
         if user_input is not None:
             raw_host = (user_input.get(CONF_HOST) or "").strip()
             port = int(user_input.get(CONF_PORT) or DEFAULT_PORT)
+            sensor_only = bool(user_input.get(CONF_SENSOR_ONLY, False))
             try:
                 host = normalize_host(raw_host)
             except ValueError:
                 errors["base"] = "invalid_host"
             else:
-                client = ToqueCompanionClient(
-                    async_get_clientsession(self.hass),
-                    host,
-                    port,
-                    token=entry.data[CONF_TOKEN],
-                    phone_id=entry.data[CONF_PHONE_ID],
-                    robot_id=entry.data[CONF_ROBOT_ID],
+                address_changed = (
+                    host != entry.data.get(CONF_HOST)
+                    or port != entry.data.get(CONF_PORT)
                 )
-                try:
-                    proven = await client.verify_robot()
-                except CompanionError:
-                    errors["base"] = "cannot_connect"
-                else:
-                    if not proven:
-                        errors["base"] = "proof_failed"
+                if address_changed:
+                    client = ToqueCompanionClient(
+                        async_get_clientsession(self.hass),
+                        host,
+                        port,
+                        token=entry.data[CONF_TOKEN],
+                        phone_id=entry.data[CONF_PHONE_ID],
+                        robot_id=entry.data[CONF_ROBOT_ID],
+                    )
+                    try:
+                        proven = await client.verify_robot()
+                    except CompanionError:
+                        errors["base"] = "cannot_connect"
                     else:
-                        return self.async_update_reload_and_abort(
-                            entry,
-                            data_updates={CONF_HOST: host, CONF_PORT: port},
-                        )
+                        if not proven:
+                            errors["base"] = "proof_failed"
+                if not errors:
+                    return self.async_update_reload_and_abort(
+                        entry,
+                        data_updates={
+                            CONF_HOST: host,
+                            CONF_PORT: port,
+                            CONF_SENSOR_ONLY: sensor_only,
+                        },
+                    )
 
+        defaults = user_input or entry.data
         return self.async_show_form(
             step_id="reconfigure",
             data_schema=vol.Schema(
                 {
-                    vol.Required(CONF_HOST, default=entry.data[CONF_HOST]): str,
                     vol.Required(
-                        CONF_PORT, default=entry.data[CONF_PORT]
+                        CONF_HOST, default=defaults.get(CONF_HOST, entry.data[CONF_HOST])
+                    ): str,
+                    vol.Required(
+                        CONF_PORT, default=defaults.get(CONF_PORT, entry.data[CONF_PORT])
                     ): vol.All(vol.Coerce(int), vol.Range(min=1, max=65535)),
+                    vol.Optional(
+                        CONF_SENSOR_ONLY,
+                        default=bool(
+                            defaults.get(
+                                CONF_SENSOR_ONLY,
+                                entry.data.get(CONF_SENSOR_ONLY, False),
+                            )
+                        ),
+                    ): bool,
                 }
             ),
             errors=errors,

@@ -41,6 +41,7 @@ async def async_get_config_entry_diagnostics(
     return {
         "entry": async_redact_data(dict(entry.data), TO_REDACT),
         "robot_id_present": bool(entry.data.get(CONF_ROBOT_ID)),
+        "sensor_only": coordinator.sensor_only,
         "robot_available": coordinator.robot_available,
         "base_data_valid": coordinator.base_data_valid,
         "last_error": coordinator.last_error,

@@ -11,11 +11,13 @@ pytest.importorskip("pytest_homeassistant_custom_component")
 from homeassistant.const import CONF_HOST, CONF_PORT, STATE_OFF, STATE_ON, STATE_UNAVAILABLE, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers import entity_registry as er
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.toque_companion.const import (
     CONF_PHONE_ID,
     CONF_ROBOT_ID,
+    CONF_SENSOR_ONLY,
     CONF_TOKEN,
     DOMAIN,
 )
@@ -32,7 +34,7 @@ async def _wait_for(predicate, timeout: float = 3.0) -> None:
 
 
 async def _setup_entry(
-    hass: HomeAssistant, fake_robot: FakeCompanionServer
+    hass: HomeAssistant, fake_robot: FakeCompanionServer, *, sensor_only: bool = False
 ) -> MockConfigEntry:
     token, phone_id = fake_robot.add_paired_client()
     entry = MockConfigEntry(
@@ -45,6 +47,7 @@ async def _setup_entry(
             CONF_TOKEN: token,
             CONF_PHONE_ID: phone_id,
             CONF_ROBOT_ID: fake_robot.robot_id,
+            CONF_SENSOR_ONLY: sensor_only,
         },
     )
     entry.add_to_hass(hass)
@@ -189,6 +192,54 @@ async def test_disconnect_marks_unavailable_and_reauth_on_revoke(
         )
         flows = hass.config_entries.flow.async_progress_by_handler(DOMAIN)
         assert any(f["context"].get("source") == "reauth" for f in flows)
+    finally:
+        assert await hass.config_entries.async_unload(entry.entry_id)
+        await hass.async_block_till_done()
+
+
+async def test_sensor_only_mode_hides_and_blocks_buttons(
+    hass: HomeAssistant, fake_robot: FakeCompanionServer
+) -> None:
+    entry = await _setup_entry(hass, fake_robot, sensor_only=True)
+    try:
+        # Sensors, binary sensors, and event entity are present
+        assert hass.states.get("sensor.monsieur_cuisine_connect_status").state == "idle"
+        assert hass.states.get("binary_sensor.monsieur_cuisine_connect_bowl_present").state == STATE_ON
+        assert hass.states.get("event.monsieur_cuisine_connect_cooking") is not None
+
+        # Control buttons are completely omitted
+        assert hass.states.get("button.monsieur_cuisine_connect_pause") is None
+        assert hass.states.get("button.monsieur_cuisine_connect_stop") is None
+        assert hass.states.get("button.monsieur_cuisine_connect_tare_scale") is None
+
+        # Direct action calls are also blocked by coordinator
+        with pytest.raises(HomeAssistantError):
+            await entry.runtime_data.async_machine_action("tare")
+        assert fake_robot.action_calls == []
+    finally:
+        assert await hass.config_entries.async_unload(entry.entry_id)
+        await hass.async_block_till_done()
+
+
+async def test_reconfigure_to_sensor_only_removes_button_entities(
+    hass: HomeAssistant, fake_robot: FakeCompanionServer
+) -> None:
+    entry = await _setup_entry(hass, fake_robot, sensor_only=False)
+    try:
+        ent_reg = er.async_get(hass)
+        assert ent_reg.async_get("button.monsieur_cuisine_connect_tare_scale") is not None
+
+        # Simulate Reconfigure switching sensor_only from False -> True before reload
+        hass.config_entries.async_update_entry(
+            entry, data={**entry.data, CONF_SENSOR_ONLY: True}
+        )
+        assert await hass.config_entries.async_reload(entry.entry_id)
+        await hass.async_block_till_done()
+
+        assert ent_reg.async_get("button.monsieur_cuisine_connect_pause") is None
+        assert ent_reg.async_get("button.monsieur_cuisine_connect_stop") is None
+        assert ent_reg.async_get("button.monsieur_cuisine_connect_tare_scale") is None
+        assert hass.states.get("sensor.monsieur_cuisine_connect_status").state == "idle"
     finally:
         assert await hass.config_entries.async_unload(entry.entry_id)
         await hass.async_block_till_done()

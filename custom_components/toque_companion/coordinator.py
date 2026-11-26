@@ -48,6 +48,7 @@ class ToqueCompanionCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         client: ToqueCompanionClient,
         initial_state: dict[str, Any],
         *,
+        sensor_only: bool = False,
         wait_seconds: int = LONG_POLL_WAIT_S,
         sleep: Callable[[float], Awaitable[None]] = asyncio.sleep,
         clock: Callable[[], float] = time.monotonic,
@@ -61,6 +62,7 @@ class ToqueCompanionCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             update_interval=None,
         )
         self.client = client
+        self.sensor_only = sensor_only
         self._wait_seconds = wait_seconds
         self._sleep = sleep
         self._clock = clock
@@ -306,6 +308,10 @@ class ToqueCompanionCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         Never retries automatically: a 504 timeout/no_answer may mean the
         command was already applied by the robot.
         """
+        if self.sensor_only:
+            raise HomeAssistantError(
+                "Integration is configured in sensor-only mode; machine commands are disabled"
+            )
         if action not in ALLOWED_ACTIONS:
             raise HomeAssistantError(f"Action not permitted: {action}")
         if not self.robot_available:

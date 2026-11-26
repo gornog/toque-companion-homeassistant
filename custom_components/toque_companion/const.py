@@ -9,6 +9,7 @@ CONF_PHONE_ID = "phone_id"
 CONF_ROBOT_ID = "robot_id"
 CONF_PAIRING_CODE = "pairing_code"
 CONF_QR_TEXT = "qr_text"
+CONF_SENSOR_ONLY = "sensor_only"
 
 DEFAULT_PORT = 8088
 SUPPORTED_PROTOCOL = 1
