@@ -28,34 +28,36 @@ Official Toque **0.10.0** introduced **Toque Compagnon** directly in the stock r
 
 ---
 
-## Installation via Home Assistant Marketplace (formerly HACS)
+## Installation
 
-Starting with **Home Assistant 2026.11**, HACS is integrated into Home Assistant Core as **Marketplace** (`Settings › Marketplace`). Older HA versions continue to use **HACS** with the exact same `hacs.json` repository format.
+**Toque Companion** is listed in the default **Home Assistant Marketplace** (HA 2026.11+) and **HACS** (HA 2026.3 - 2026.10) catalog.
 
-### Option 1 — Home Assistant Marketplace (HA 2026.11+)
+### Recommended - Home Assistant Marketplace (HA 2026.11+)
 
 1. Open Home Assistant and go to **Settings › Marketplace** (`/marketplace`).
-2. Click **Add from link** in the top bar (or **⋮ › Custom repositories › Add from link**).
-3. Paste the repository URL into **GitHub link** and click **Add**:
-   ```text
-   https://github.com/gornog/toque-companion-homeassistant
-   ```
-   Marketplace automatically detects the repository type as **Integration**.
-
-   ![Add from a GitHub link in Home Assistant Marketplace](docs/images/marketplace-add-link.png)
-
-4. Open **Toque Companion**, click **Install**, and confirm **Install**.
+2. Search for **Toque Companion**.
+3. Open **Toque Companion**, click **Install**, and confirm **Install**.
    On Home Assistant 2026.11+, the integration installs live (no restart required) and shows a **Set up** button.
 
    ![Toque Companion installed in Home Assistant Marketplace](docs/images/marketplace-installed.png)
 
-### Option 2 — Classic HACS (HA 2026.3 – 2026.10)
+### Recommended - Classic HACS (HA 2026.3 - 2026.10)
 
-1. Open **HACS › ⋮ › Custom repositories**.
-2. Add `https://github.com/gornog/toque-companion-homeassistant` with category **Integration**.
-3. Search for **Toque Companion**, download the latest release, and **restart Home Assistant**.
+1. Open **HACS** in Home Assistant and search for **Toque Companion**.
+2. Click **Download** to install the latest release.
+3. **Restart Home Assistant**.
 
-### Option 3 — Manual installation
+### Alternative - Custom repository
+
+If **Toque Companion** does not appear in your catalog yet (or you want to install a fork or branch):
+
+- **Marketplace (HA 2026.11+)**: Open **Settings › Marketplace**, click **Add from link** (or **⋮ › Custom repositories › Add from link**), paste `https://github.com/gornog/toque-companion-homeassistant`, click **Add**, then install **Toque Companion**.
+
+  ![Add from a GitHub link in Home Assistant Marketplace](docs/images/marketplace-add-link.png)
+
+- **Classic HACS (HA 2026.3 - 2026.10)**: Open **HACS › ⋮ › Custom repositories**, add `https://github.com/gornog/toque-companion-homeassistant` with category **Integration**, download **Toque Companion**, and **restart Home Assistant**.
+
+### Manual installation
 
 Copy `custom_components/toque_companion` into your Home Assistant `config/custom_components/` directory and restart Home Assistant.
 
